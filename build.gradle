@@ -12,4 +12,6 @@ repositories {
 dependencies {
     testCompile 'junit:junit:4.11'
     compile 'org.springframework.data:spring-data-mongodb:1.9.1.RELEASE'
+    compile 'org.hibernate:hibernate-core:5.1.0.Final'
+    compile 'org.hibernate:hibernate-entitymanager:5.1.0.Final'
 }

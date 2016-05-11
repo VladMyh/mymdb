@@ -2,28 +2,41 @@ package com.app.movie;
 
 import com.app.actor.Actor;
 import com.app.director.Director;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 import java.util.List;
 
+@Entity
+@Table(name = "Movies")
 public class Movie {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "movie_id")
     private Long id;
 
-    @Indexed
-    private String ic;
-
+    @Column(name = "releaseDate")
+    @Temporal(TemporalType.DATE)
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private Date releaseDate;
 
+    @Column(name = "title")
     private String title;
+
+    @Column(name = "synopsis")
     private String synopsis;
+
+    @Column(name = "runtimeMinutes")
     private Integer runtimeMinutes;
+
+    @ManyToMany(cascade = CascadeType.All)
+    @JoinTable(name = "Movies_Directors",
+    joinColumns = {@JoinColumn(name = "movie_id")},
+            inverseJoinColumns = {@JoinColumn(name="director_id")})
     private List<Director> directors;
+
     private List<Actor> actors;
     private List<Genre> genres;
     private List<String> imagesObjectIds;
