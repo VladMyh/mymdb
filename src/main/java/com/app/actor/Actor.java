@@ -1,5 +1,6 @@
 package com.app.actor;
 
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
@@ -7,7 +8,7 @@ import java.util.Date;
 public class Actor {
 
     @Id
-    @GenaratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "actor_id")
     private Long id;
 

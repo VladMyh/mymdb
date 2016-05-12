@@ -1,6 +1,6 @@
 package com.app.director;
 
-
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
@@ -8,7 +8,7 @@ import java.util.Date;
 public class Director {
 
     @Id
-    @GenaratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "director_id")
     private Long id;
 

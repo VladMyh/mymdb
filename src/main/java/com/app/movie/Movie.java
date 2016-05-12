@@ -2,9 +2,8 @@ package com.app.movie;
 
 import com.app.actor.Actor;
 import com.app.director.Director;
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
@@ -19,7 +18,6 @@ public class Movie {
 
     @Column(name = "releaseDate")
     @Temporal(TemporalType.DATE)
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private Date releaseDate;
 
     @Column(name = "title")
@@ -31,10 +29,9 @@ public class Movie {
     @Column(name = "runtimeMinutes")
     private Integer runtimeMinutes;
 
-    @ManyToMany(cascade = CascadeType.All)
-    @JoinTable(name = "Movies_Directors",
-    joinColumns = {@JoinColumn(name = "movie_id")},
-            inverseJoinColumns = {@JoinColumn(name="director_id")})
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "Movies_Directors", joinColumns = {@JoinColumn(name = "movie_id")},
+                                inverseJoinColumns = {@JoinColumn(name="director_id")})
     private List<Director> directors;
 
     private List<Actor> actors;
