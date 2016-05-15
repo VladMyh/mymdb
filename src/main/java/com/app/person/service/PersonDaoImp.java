@@ -9,20 +9,20 @@ import org.springframework.stereotype.Service;
 public class PersonDaoImp implements PersonService{
 
     @Autowired
-    private PersonDao dao;
+    private PersonDao personDao;
 
     @Override
     public Person addOrUpdatePerson(Person person) {
-        return null;
+        return personDao.addOrUpdatePerson(person);
     }
 
     @Override
     public void deletePerson(Person person) {
-
+        personDao.deletePerson(person);
     }
 
     @Override
     public Person getPersonById(String id) {
-        return null;
+        return personDao.getPersonById(id);
     }
 }

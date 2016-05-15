@@ -38,8 +38,6 @@ public class MongoMovieDao implements MovieDao {
 
     @Override
     public Movie getMovieById(String id) {
-        Query query = new Query();
-        query.addCriteria(Criteria.where("_id").is(id));
-        return mongoOperation.findOne(query, Movie.class);
+        return mongoOperation.findOne(new Query(Criteria.where("_id").is(id)), Movie.class);
     }
 }
