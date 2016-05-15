@@ -12,7 +12,8 @@ public enum Genre {
     Mystery("Action"),
     Romance("Mystery"),
     Thriller("Thriller"),
-    Animation("Animation");
+    Animation("Animation"),
+    Crime("Crime");
 
     private final String name;
 
