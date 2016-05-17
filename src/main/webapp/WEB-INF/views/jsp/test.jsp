@@ -6,9 +6,7 @@
 <body>
 <h1>Test</h1>
 <ul>
-    <li>${movie.title}</li>
-    <li>${movie.synopsis}</li>
-    <li>${movie.genres}</li>
+    <p>Oops ¯\_('o')_/¯</p>
 </ul>
 </body>
 </html>

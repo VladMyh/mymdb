@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Repository
 public class MongoMovieDao implements MovieDao {
@@ -39,5 +40,10 @@ public class MongoMovieDao implements MovieDao {
     @Override
     public Movie getMovieById(String id) {
         return mongoOperation.findOne(new Query(Criteria.where("_id").is(id)), Movie.class);
+    }
+
+    @Override
+    public List<Movie> getPage(int pageNunber, int itemsPerPage) {
+        return null;
     }
 }

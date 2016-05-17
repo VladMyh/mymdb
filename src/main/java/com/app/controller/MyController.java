@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
@@ -21,7 +22,7 @@ public class MyController {
 
     @RequestMapping(value = {"/mymdb"}, method = RequestMethod.GET)
     public String index(){
-        return "mymdb";
+        return "index";
     }
 
     @RequestMapping(value = {"/"}, method = RequestMethod.GET)
@@ -30,12 +31,7 @@ public class MyController {
     }
 
     @RequestMapping(value = "/mymdb/test", method = RequestMethod.GET)
-    public ModelAndView test(){
-        Movie test = movieService.getMovieById("57388cf9ba78fae0cd5f6562");
-
-        ModelAndView model = new ModelAndView("test");
-        model.addObject("movie", test);
-
-        return model;
+    public String test(){
+        return "test";
     }
 }
