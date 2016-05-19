@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 @Repository
 public class MongoMovieDao implements MovieDao {
@@ -45,5 +46,11 @@ public class MongoMovieDao implements MovieDao {
     @Override
     public List<Movie> getPage(int pageNunber, int itemsPerPage) {
         return null;
+    }
+
+    @Override
+    public List<Movie> searchMovies(String name) {
+        Pattern pattern = Pattern.compile(name, Pattern.CASE_INSENSITIVE);
+        return (ArrayList<Movie>) mongoOperation.find(new Query(Criteria.where("title").regex(pattern)), Movie.class);
     }
 }

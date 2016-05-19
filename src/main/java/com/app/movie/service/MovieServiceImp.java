@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class MovieServiceImp implements MovieService {
@@ -24,7 +25,7 @@ public class MovieServiceImp implements MovieService {
     }
 
     @Override
-    public void deleteMovie(Long id) {
+    public void deleteMovie(String id) {
 
     }
 
@@ -36,5 +37,15 @@ public class MovieServiceImp implements MovieService {
     @Override
     public Movie getMovieById(String id) {
         return movieDao.getMovieById(id);
+    }
+
+    @Override
+    public List<Movie> getPage(int pageNunber, int itemsPerPage) {
+        return null;
+    }
+
+    @Override
+    public List<Movie> searchMovies(String query) {
+        return movieDao.searchMovies(query);
     }
 }

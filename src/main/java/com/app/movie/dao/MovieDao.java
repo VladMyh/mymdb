@@ -12,4 +12,8 @@ public interface MovieDao {
     long getNumberOfFilms();
     Movie getMovieById(String id);
     List<Movie> getPage(int pageNunber, int itemsPerPage);
+    List<Movie> searchMovies(String query);
+
+    //TODO: finish paging method
+    //TODO: add method to load images into db
 }
