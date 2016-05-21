@@ -41,5 +41,8 @@ dependencies {
     compile 'org.springframework.batch:spring-batch-core:3.0.6.RELEASE'
     compile 'org.springframework.data:spring-data-mongodb:1.9.1.RELEASE'
     compile 'org.springframework:spring-test:4.2.5.RELEASE'
+    compile 'org.springframework.security:spring-security-web:4.1.0.RELEASE'
+    compile 'org.springframework.security:spring-security-config:4.1.0.RELEASE'
+
 
 }
