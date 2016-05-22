@@ -24,6 +24,8 @@
 
     <spring:url value="/resources/themes/img/gr_web.jpg" var="image"/>
 
+    <!--Context path-->
+    <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 </head>
 
 <body>
@@ -39,19 +41,25 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">Start Bootstrap</a>
+                <a class="navbar-brand" href="${contextPath}/mymdb">MyMDB</a>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li>
-                        <a href="#">About</a>
+                        <a href="#">All movies</a>
                     </li>
                     <li>
-                        <a href="#">Services</a>
+                        <a href="#">Genres</a>
                     </li>
                     <li>
-                        <a href="#">Contact</a>
+                        <a href="#">People</a>
+                    </li>
+                    <li>
+                        <a href="#">${user}</a><!--TODO:replace-->
+                    </li>
+                    <li>
+                        <a href="${contextPath}/mymdb/login">Login</a>
                     </li>
                 </ul>
             </div>
@@ -77,7 +85,7 @@
         <div class="row">
 
             <div class="col-md-8">
-                <img class="img-responsive" src="${image}" alt="">
+                <img class="img-responsive" src="${image}" width="182" height="268" alt="">
             </div>
 
             <div class="col-md-4">

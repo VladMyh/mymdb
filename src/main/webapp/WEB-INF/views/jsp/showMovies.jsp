@@ -12,7 +12,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>3 Col Portfolio - Start Bootstrap Template</title>
+    <title>${title}</title>
 
     <!-- Bootstrap Core CSS -->
     <spring:url value="/resources/themes/css/bootstrap.min.css" var="CoreCss"/>
@@ -24,6 +24,8 @@
 
     <spring:url value="/resources/themes/img/gr_web.jpg" var="image"/>
 
+    <!--Context path-->
+    <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 </head>
 
 <body>
@@ -39,7 +41,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">MyMDB</a>
+                <a class="navbar-brand" href="${contextPath}/mymdb">MyMDB</a>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -52,6 +54,12 @@
                     </li>
                     <li>
                         <a href="#">People</a>
+                    </li>
+                    <li>
+                        <a href="#">${user}</a><!--TODO:replace-->
+                    </li>
+                    <li>
+                        <a href="${contextPath}/mymdb/login">Login</a>
                     </li>
                 </ul>
             </div>
@@ -77,11 +85,11 @@
                 <div class="row">
             </c:if>
                 <div class="col-md-4 portfolio-item">
-                    <a href="${pageContext.request.contextPath}/mymdb/movies/view?id=${i.id}">
+                    <a href="${contextPath}/mymdb/movies/view?id=${i.id}">
                         <img class="img-responsive" src="${image}" alt="">
                     </a>
                     <h3>
-                        <a href="${pageContext.request.contextPath}/mymdb/movies/view?id=${i.id}">${i.title}</a>
+                        <a href="${contextPath}/mymdb/movies/view?id=${i.id}">${i.title}</a>
                     </h3>
                     <p>${i.synopsis}</p>
                 </div>

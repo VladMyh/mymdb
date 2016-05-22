@@ -24,11 +24,6 @@ dependencies {
     compile 'javax.persistence:persistence-api:1.0'
     compile 'org.mongodb:mongo-java-driver:2.11.0'
 
-
-    //Hibernate
-    compile 'org.hibernate:hibernate-core:5.1.0.Final'
-    compile 'org.hibernate:hibernate-entitymanager:5.1.0.Final'
-
     //Spring
     compile 'org.springframework:spring-beans:4.2.5.RELEASE'
     compile 'org.springframework:spring-context:4.2.5.RELEASE'
@@ -43,6 +38,5 @@ dependencies {
     compile 'org.springframework:spring-test:4.2.5.RELEASE'
     compile 'org.springframework.security:spring-security-web:4.1.0.RELEASE'
     compile 'org.springframework.security:spring-security-config:4.1.0.RELEASE'
-
-
+    compile 'org.springframework.security:spring-security-taglibs:4.1.0.RELEASE'
 }

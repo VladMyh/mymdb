@@ -21,25 +21,31 @@ public class MyController {
     private MovieService movieService;
 
     @RequestMapping(value = {"/mymdb"}, method = RequestMethod.GET)
-    public String index(){
-        return "index";
+    public ModelAndView index(){
+        ModelAndView model = new ModelAndView("mymdb");
+        model.addObject("user", getPrincipal());
+
+        return model;
     }
 
     @RequestMapping(value = {"/"}, method = RequestMethod.GET)
     public String indexRedirect(){
-        return "redirect:mymdb";
+        return "redirect:/mymdb";
     }
 
     @RequestMapping(value = "/mymdb/movies/search", params = {"query"}, method = RequestMethod.GET)
     public @ResponseBody ModelAndView test(@RequestParam(value = "query") String query){
-        ModelAndView model = new ModelAndView("index");
+        ModelAndView model = new ModelAndView("showMovies");
+        model.addObject("title","MyMDB - Search");
         model.addObject("movies", movieService.searchMovies(query));
+        model.addObject("user", getPrincipal());
         return model;
     }
 
     @RequestMapping(value = "/mymdb/movies", method = RequestMethod.GET)
     public ModelAndView allMovie(){
-        ModelAndView model = new ModelAndView("index");
+        ModelAndView model = new ModelAndView("showMovies");
+        model.addObject("title", "MyMDB - Movies");
         model.addObject("movies", movieService.getAllMovies());
         return model;
     }
@@ -62,19 +68,24 @@ public class MyController {
         return "user";
     }
 
+    @RequestMapping(value = "/error", method = RequestMethod.GET)
+    public String accessDeniedPage(ModelMap model) {
+        model.addAttribute("user", getPrincipal());
+        return "error";
+    }
+
+    @RequestMapping(value = "/mymdb/login", method = RequestMethod.GET)
+    public String loginPage() {
+        return "login";
+    }
+
     @RequestMapping(value="/mymdb/logout", method = RequestMethod.GET)
     public String logoutPage (HttpServletRequest request, HttpServletResponse response) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null){
             new SecurityContextLogoutHandler().logout(request, response, auth);
         }
-        return "welcome";
-    }
-
-    @RequestMapping(value = "/error", method = RequestMethod.GET)
-    public String accessDeniedPage(ModelMap model) {
-        model.addAttribute("user", getPrincipal());
-        return "error";
+        return "redirect:/mymdb/login?logout";
     }
 
     private String getPrincipal(){
