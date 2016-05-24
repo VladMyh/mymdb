@@ -1,7 +1,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="script" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -13,7 +13,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>MyMDB - Main Page</title>
+    <title>MyMDB - Login</title>
 
     <!-- Bootstrap Core CSS -->
     <spring:url value="/resources/themes/css/bootstrap.min.css" var="CoreCss"/>
@@ -25,6 +25,7 @@
 
     <!--Context path-->
     <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
+    <sec:csrfMetaTags/>
 </head>
 
 <body>
@@ -53,22 +54,10 @@
                 </li>
                 <li>
                     <a href="#">People</a>
-                </li
-                <sec:authorize access="hasAnyRole('ADMIN', 'USER')">>
+                </li>
                 <li>
                     <a href="#">${user}</a><!--TODO:replace-->
                 </li>
-                </sec:authorize>
-                <sec:authorize access="isAnonymous()">
-                    <li>
-                        <a href="${contextPath}/mymdb/login">Login</a>
-                    </li>
-                </sec:authorize>
-                <sec:authorize access="hasAnyRole('ADMIN', 'USER')">
-                    <li>
-                        <a href="${contextPath}/mymdb/logout">Logout</a>
-                    </li>
-                </sec:authorize>
             </ul>
         </div>
         <!-- /.navbar-collapse -->
@@ -82,22 +71,48 @@
     <!-- Page Header -->
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">Main page</h1>
+            <h1 class="page-header">Login</h1>
         </div>
     </div>
+    <!--Rows-->
 
     <div class="row">
-        <div class="col-lg-6">
-            <div class="input-group">
-                <form action="${contextPath}/mymdb/movies/search" method="get">
-                    <input type="text" class="form-control" name="query" placeholder="Search for...">
-                    <span class="input-group-btn">
-                        <input type="submit" class="btn btn-default" value="Search"/>
-                    </span>
-                </form>
+        <div class="col-md-4">
+            <div class="login-card">
+                <div class="login-form">
+                    <c:url value="/j_spring_security_check" var="loginUrl" />
+                    <form action="${loginUrl}" method="post" class="form-horizontal">
+                        <c:if test="${param.error != null}">
+                            <div class="alert alert-danger">
+                                <p>Invalid username and password.</p>
+                            </div>
+                        </c:if>
+                        <c:if test="${param.logout != null}">
+                            <div class="alert alert-success">
+                                <p>You have been logged out successfully.</p>
+                            </div>
+                        </c:if>
+                        <div class="input-group input-sm">
+                            <label class="input-group-addon" for="username"><i class="fa fa-user"></i></label>
+                            <input type="text" class="form-control" id="username" name="username" placeholder="Enter Username" required>
+                        </div>
+                        <div class="input-group input-sm">
+                            <label class="input-group-addon" for="password"><i class="fa fa-lock"></i></label>
+                            <input type="password" class="form-control" id="password" name="password" placeholder="Enter Password" required>
+                        </div>
+                        <input type="hidden" name="${_csrf.parameterName}"   value="${_csrf.token}" />
+
+                        <div class="form-actions">
+                            <input type="submit"
+                                   class="btn btn-block btn-primary btn-default" value="Log in">
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
+
+<hr>
 
 <hr>
 
@@ -110,6 +125,7 @@
     </div>
     <!-- /.row -->
 </footer>
+
 
 <!-- /.container -->
 

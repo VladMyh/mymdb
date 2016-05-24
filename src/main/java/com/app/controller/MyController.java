@@ -1,6 +1,11 @@
 package com.app.controller;
 
+import com.app.media.sevice.MediaService;
+import com.app.movie.Genre;
 import com.app.movie.service.MovieService;
+import com.app.person.JobTitle;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -9,16 +14,25 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 public class MyController {
 
     @Autowired
     private MovieService movieService;
+
+    @Autowired
+    private MediaService mediaService;
 
     @RequestMapping(value = {"/mymdb"}, method = RequestMethod.GET)
     public ModelAndView index(){
@@ -86,6 +100,47 @@ public class MyController {
             new SecurityContextLogoutHandler().logout(request, response, auth);
         }
         return "redirect:/mymdb/login?logout";
+    }
+
+    @RequestMapping(value = "/mymdb/movies/add", method = RequestMethod.GET)
+    public String add(){
+        return "addMovie";
+    }
+
+    @RequestMapping(value = "/mymdb/movies/add", method = RequestMethod.POST,
+            params = {"title", "releaseDate", "runtime", "synopsis", "crew", "genres", "imageObjectIds"})
+    public ModelAndView add(@RequestParam(value = "title") String title,
+                            @RequestParam(value = "releaseDate", required = false) Date releaseDate,
+                            @RequestParam(value = "runtime", required = false) Integer runtime,
+                            @RequestParam(value = "synopsis", required = false) String synopsis,
+                            @RequestParam(value = "crew", required = false) Map<String, JobTitle> crew,
+                            @RequestParam(value = "genres", required = false) List<Genre> genres,
+                            @RequestParam(value = "imageObjectsIds", required = false) List<String> images){
+        ModelAndView model = new ModelAndView("addMovie");
+
+        return model;
+    }
+
+    @RequestMapping(value = "/mymdb/media/upload", method = RequestMethod.GET)
+    public String uploadImage(){
+        return "uploadImage";
+    }
+
+    @RequestMapping(value = "/mymdb/media/upload", method = RequestMethod.POST, params = {"file", "title"})
+    public @ResponseBody String uploadImage(@RequestParam("title") String title,
+                                            @RequestParam("file") MultipartFile file){
+        if(file != null) {
+            DBObject metadata = new BasicDBObject();
+            metadata.put("title", title);
+
+            try {
+                mediaService.uploadImage(file.getInputStream(), metadata);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return "uploadImage";
     }
 
     private String getPrincipal(){
