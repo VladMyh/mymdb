@@ -54,21 +54,22 @@
                 <li>
                     <a href="#">People</a>
                 </li
-                <sec:authorize access="hasAnyRole('ADMIN', 'USER')">>
+                <sec:authorize access="hasAnyRole('ADMIN', 'USER')"/>
                 <li>
                     <a href="#">${user}</a><!--TODO:replace-->
                 </li>
-                </sec:authorize>
-                <sec:authorize access="isAnonymous()">
+                <%--</sec:authorize>--%>
+                <%--<sec:authorize access="isAnonymous()">--%>
                     <li>
                         <a href="${contextPath}/mymdb/login">Login</a>
                     </li>
-                </sec:authorize>
-                <sec:authorize access="hasAnyRole('ADMIN', 'USER')">
-                    <li>
-                        <a href="${contextPath}/mymdb/logout">Logout</a>
-                    </li>
-                </sec:authorize>
+                <%--</sec:authorize>--%>
+                <%--<sec:authorize access="hasAnyRole('ADMIN', 'USER')">--%>
+                    <%--<li>--%>
+                        <%--<a href="${contextPath}/mymdb/logout">Logout</a>--%>
+                    <%--</li>--%>
+                <%--</sec:authorize>--%>
+
             </ul>
         </div>
         <!-- /.navbar-collapse -->

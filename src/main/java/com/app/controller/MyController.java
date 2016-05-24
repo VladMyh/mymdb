@@ -1,6 +1,9 @@
 package com.app.controller;
 
 import com.app.movie.service.MovieService;
+import com.app.user.User;
+import com.app.user.UserRole;
+import com.app.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,12 +16,16 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 
 @Controller
 public class MyController {
 
     @Autowired
     private MovieService movieService;
+
+    @Autowired
+    private UserService userService;
 
     @RequestMapping(value = {"/mymdb"}, method = RequestMethod.GET)
     public ModelAndView index(){

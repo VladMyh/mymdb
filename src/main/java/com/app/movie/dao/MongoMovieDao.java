@@ -44,7 +44,7 @@ public class MongoMovieDao implements MovieDao {
     }
 
     @Override
-    public List<Movie> getPage(int pageNunber, int itemsPerPage) {
+    public List<Movie> getPage(int pageNumber, int itemsPerPage) {
         return null;
     }
 
