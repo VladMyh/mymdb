@@ -4,26 +4,31 @@
         xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
         http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.1.xsd">
 
-<http auto-config="true" use-expressions="true">
+<http auto-config="true">
     <intercept-url pattern="/mymdb" access="permitAll"/>
     <intercept-url pattern="/mymdb/error" access="permitAll"/>
     <intercept-url pattern="/mymdb/movies/search" access="permitAll"/>
     <intercept-url pattern="/mymdb/movies" access="permitAll"/>
     <intercept-url pattern="/mymdb/movies/view" access="permitAll"/>
-    <intercept-url pattern="/mymdb/admin**" access="hasRole('ROLE_ADMIN')" />
-    <intercept-url pattern="/mymdb/user**" access="hasRole('ROLE_USER')" />
+    <intercept-url pattern="/mymdb/media/upload" access="permitAll"/>
+    <intercept-url pattern="/mymdb/admin**" access="hasRole('ADMIN')" />
+    <intercept-url pattern="/mymdb/user**" access="hasRole('USER')" />
+    <intercept-url pattern="/mymdb/movies/add" access="hasRole('ADMIN')"/>
     <form-login  login-page="/mymdb/login"
                  login-processing-url="/j_spring_security_check"
                  username-parameter="username"
                  password-parameter="password"
                  authentication-failure-url="/error" />
-    <csrf/>
+    <csrf disabled="true"/>
 </http>
 
-<authentication-manager >
-    <authentication-provider user-service-ref="userDetailsServiceImp"/>
+<authentication-manager>
+<authentication-provider>
+    <user-service>
+        <user name="admin" password="admin" authorities="ROLE_ADMIN" />
+        <user name="user" password="user" authorities="ROLE_USER" />
+    </user-service>
+</authentication-provider>
 </authentication-manager>
-
-<beans:bean id="userDetailsServiceImp" class="com.app.security.UserDetailsServiceImp" />
 
 </beans:beans>
