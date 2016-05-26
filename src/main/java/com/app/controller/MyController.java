@@ -2,6 +2,7 @@ package com.app.controller;
 
 import com.app.media.sevice.MediaService;
 import com.app.movie.Genre;
+import com.app.movie.Movie;
 import com.app.movie.service.MovieService;
 import com.app.person.JobTitle;
 import com.mongodb.BasicDBObject;
@@ -20,7 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Calendar;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -107,16 +108,49 @@ public class MyController {
         return "addMovie";
     }
 
-    @RequestMapping(value = "/mymdb/movies/add", method = RequestMethod.POST,
-            params = {"title", "releaseDate", "runtime", "synopsis", "crew", "genres", "imageObjectIds"})
+    @RequestMapping(value = "/mymdb/movies/add", method = RequestMethod.POST)
     public ModelAndView add(@RequestParam(value = "title") String title,
                             @RequestParam(value = "releaseDate", required = false) Date releaseDate,
                             @RequestParam(value = "runtime", required = false) Integer runtime,
                             @RequestParam(value = "synopsis", required = false) String synopsis,
                             @RequestParam(value = "crew", required = false) Map<String, JobTitle> crew,
                             @RequestParam(value = "genres", required = false) List<Genre> genres,
-                            @RequestParam(value = "imageObjectsIds", required = false) List<String> images){
+                            @RequestParam(value = "image", required = false) MultipartFile image,
+                            @RequestParam(value = "imageTitle", required = false) String imageTitle){
+        Movie movie = new Movie();
+        if(title != null)
+            movie.setTitle(title);
+        if(releaseDate != null)
+            movie.setReleaseDate(releaseDate);
+        if(runtime != null)
+            movie.setRuntimeMinutes(runtime);
+        if(synopsis != null)
+            movie.setSynopsis(synopsis);
+        if(crew != null)
+            movie.setCrew(crew);
+        if(genres != null)
+            movie.setGenres(genres);
+
+        List<String> images = new ArrayList<>();
+
+        if(image != null) {
+            DBObject metadata = new BasicDBObject();
+            metadata.put("title", title);
+
+            try {
+                images.add(mediaService.uploadImage(image, metadata));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if(images.size() > 0)
+            movie.setImagesObjectIds(images);
+
+        movie = movieService.addOrUpdateMovie(movie);
+
         ModelAndView model = new ModelAndView("addMovie");
+        model.addObject("id", movie.getId());
 
         return model;
     }
@@ -126,21 +160,25 @@ public class MyController {
         return "uploadImage";
     }
 
-    @RequestMapping(value = "/mymdb/media/upload", method = RequestMethod.POST, params = {"file", "title"})
-    public @ResponseBody String uploadImage(@RequestParam("title") String title,
-                                            @RequestParam("file") MultipartFile file){
+    @RequestMapping(value = "/mymdb/media/upload", method = RequestMethod.POST)
+    public @ResponseBody ModelAndView uploadImage(@RequestParam("file") MultipartFile file,
+                                            @RequestParam("title") String title){
+        String imageId = "";
         if(file != null) {
             DBObject metadata = new BasicDBObject();
             metadata.put("title", title);
 
             try {
-                mediaService.uploadImage(file.getInputStream(), metadata);
+                imageId = mediaService.uploadImage(file, metadata);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
 
-        return "uploadImage";
+        ModelAndView model = new ModelAndView("uploadImage");
+        model.addObject("id", imageId);
+
+        return model;
     }
 
     private String getPrincipal(){

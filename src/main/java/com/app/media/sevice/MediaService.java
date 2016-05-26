@@ -1,9 +1,11 @@
 package com.app.media.sevice;
 
 import com.mongodb.DBObject;
-
-import java.io.InputStream;
+import com.mongodb.gridfs.GridFSDBFile;
+import org.springframework.web.multipart.MultipartFile;
+import java.io.IOException;
 
 public interface MediaService {
-    String uploadImage(InputStream stream, DBObject metadata);
+    String uploadImage(MultipartFile file, DBObject metadata) throws IOException;
+    GridFSDBFile getImageById(String id);
 }

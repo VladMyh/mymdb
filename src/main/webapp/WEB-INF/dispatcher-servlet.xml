@@ -22,7 +22,7 @@
     </bean>
 
     <mongo:mongo host="${mongodb.url}" port="${mongodb.port}" />
-    <mongo:db-factory dbname="${mongodb.dbname}" />
+    <mongo:db-factory id="mongoDbFactory" dbname="${mongodb.dbname}" mongo-ref="mongo"/>
     <mongo:mapping-converter id="converter" db-factory-ref="mongoDbFactory"/>
 
     <bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
@@ -34,7 +34,9 @@
         <constructor-arg ref="converter"/>
     </bean>
 
-
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSizePerFile" value="5242880"/>
+    </bean>
 
     <mvc:resources mapping="/resources/**" location="/resources/" />
 

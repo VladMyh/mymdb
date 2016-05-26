@@ -86,11 +86,15 @@
     </div>
 
     <div class="row">
+
+        <p>${id}</p>
+
+
         <div class="col-lg-6">
             <div class="input-group">
                 <form action="${contextPath}/mymdb/media/upload" method="post" enctype="multipart/form-data">
-                    Image: <input type="file" name="file"><br />
-                    Title: <input type="text" name="title"><br /> <br />
+                    Image: <input type="file" name="file"/>
+                    Title: <input type="text" name="title"/>
                     <span class="input-group-btn">
                         <input type="submit" class="btn btn-default" value="Upload"/>
                     </span>

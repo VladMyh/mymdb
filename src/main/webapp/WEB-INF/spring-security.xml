@@ -14,6 +14,7 @@
     <intercept-url pattern="/mymdb/admin**" access="hasRole('ADMIN')" />
     <intercept-url pattern="/mymdb/user**" access="hasRole('USER')" />
     <intercept-url pattern="/mymdb/movies/add" access="hasRole('ADMIN')"/>
+    <intercept-url pattern="/mymdb/media/upload" access="hasRole('ADMIN')"/>
     <form-login  login-page="/mymdb/login"
                  login-processing-url="/j_spring_security_check"
                  username-parameter="username"
