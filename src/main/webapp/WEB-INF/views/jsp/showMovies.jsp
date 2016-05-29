@@ -22,8 +22,6 @@
     <spring:url value="/resources/themes/css/3-col-portfolio.css" var="CustomCss"/>
     <link href="${CustomCss}" rel="stylesheet">
 
-    <spring:url value="/resources/themes/img/gr_web.jpg" var="image"/>
-
     <!--Context path-->
     <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 </head>
@@ -86,7 +84,13 @@
             </c:if>
                 <div class="col-md-4 portfolio-item">
                     <a href="${contextPath}/mymdb/movies/view?id=${i.id}">
-                        <img class="img-responsive" src="${image}" alt="">
+                        <c:if test="${i.imagesObjectIds == null}">
+                            <img class="img-responsive" src="http://placehold.it/202x288" width="202" height="288" alt="">
+                        </c:if>
+                        <c:if test="${i.imagesObjectIds != null}">
+                            <img class="img-responsive" src="${contextPath}/mymdb/media/get?id=${i.imagesObjectIds.get(0)}"
+                                 width="202" height="288" alt="">
+                        </c:if>
                     </a>
                     <h3>
                         <a href="${contextPath}/mymdb/movies/view?id=${i.id}">${i.title}</a>

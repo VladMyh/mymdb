@@ -7,7 +7,9 @@ import com.app.movie.service.MovieService;
 import com.app.person.JobTitle;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -130,28 +132,26 @@ public class MyController {
             movie.setCrew(crew);
         if(genres != null)
             movie.setGenres(genres);
-
-        List<String> images = new ArrayList<>();
-
-        if(image != null) {
+        //TODO:fix addition of nonexistant image id to movies without image
+        if(image.isEmpty()) {
+            List<String> images = new ArrayList<>();
             DBObject metadata = new BasicDBObject();
-            metadata.put("title", title);
+            metadata.put("title", imageTitle);
 
             try {
                 images.add(mediaService.uploadImage(image, metadata));
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
 
-        if(images.size() > 0)
-            movie.setImagesObjectIds(images);
+            if(images.size() > 0)
+                movie.setImagesObjectIds(images);
+        }
 
         movie = movieService.addOrUpdateMovie(movie);
 
         ModelAndView model = new ModelAndView("addMovie");
         model.addObject("id", movie.getId());
-
         return model;
     }
 
@@ -179,6 +179,16 @@ public class MyController {
         model.addObject("id", imageId);
 
         return model;
+    }
+
+    @RequestMapping(value = "/mymdb/media/get", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
+    public @ResponseBody byte[] getImageById(@RequestParam("id") String id){
+        try {
+            return IOUtils.toByteArray(mediaService.getImageById(id).getInputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     private String getPrincipal(){

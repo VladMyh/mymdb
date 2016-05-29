@@ -86,10 +86,6 @@
     </div>
 
     <div class="row">
-
-        <p>${id}</p>
-
-
         <div class="col-lg-6">
             <div class="input-group">
                 <form action="${contextPath}/mymdb/movies/add" method="post" enctype="multipart/form-data">

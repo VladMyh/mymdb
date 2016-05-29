@@ -1,6 +1,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="script" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,7 +13,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Portfolio Item - Start Bootstrap Template</title>
+    <title>MyMDB - ${movie.title}</title>
 
     <!-- Bootstrap Core CSS -->
     <spring:url value="/resources/themes/css/bootstrap.min.css" var="CoreCss"/>
@@ -21,8 +22,6 @@
     <!-- Custom CSS -->
     <spring:url value="/resources/themes/css/3-col-portfolio.css" var="CustomCss"/>
     <link href="${CustomCss}" rel="stylesheet">
-
-    <spring:url value="/resources/themes/img/gr_web.jpg" var="image"/>
 
     <!--Context path-->
     <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
@@ -85,14 +84,19 @@
         <div class="row">
 
             <div class="col-md-8">
-                <img class="img-responsive" src="${image}" width="182" height="268" alt="">
+                <c:if test="${movie.imagesObjectIds == null}">
+                    <img class="img-responsive" src="http://placehold.it/182x268" width="182" height="268" alt="">
+                </c:if>
+                <c:if test="${movie.imagesObjectIds != null}">
+                    <img class="img-responsive" src="${contextPath}/mymdb/media/get?id=${movie.imagesObjectIds.get(0)}" width="182" height="268" alt="">
+                </c:if>
             </div>
 
             <div class="col-md-4">
                 <h3>Synopsis</h3>
                 <p>${movie.synopsis}</p>
                 <h3>Release date</h3>
-                <p>${movie.releaseDate.toGMTString()}</p>
+                <p><fmt:formatDate pattern="dd/MM/yyyy" value="${movie.releaseDate}" /></p>
                 <h3>Genres</h3>
                 <ul>
                 <c:forEach var="i" items="${movie.genres}">
