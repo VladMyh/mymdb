@@ -15,11 +15,12 @@
     <intercept-url pattern="/mymdb/user**" access="hasRole('USER')" />
     <intercept-url pattern="/mymdb/movies/add" access="hasRole('ADMIN')"/>
     <intercept-url pattern="/mymdb/media/upload" access="hasRole('ADMIN')"/>
+    <intercept-url pattern="/mymdb/people/add" access="hasRole('ADMIN')"/>
     <form-login  login-page="/mymdb/login"
                  login-processing-url="/j_spring_security_check"
                  username-parameter="username"
                  password-parameter="password"
-                 authentication-failure-url="/error" />
+                 authentication-failure-url="/error"/>
     <csrf disabled="true"/>
 </http>
 

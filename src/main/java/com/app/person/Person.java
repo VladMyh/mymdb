@@ -7,6 +7,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 @Document(collection = "people")
@@ -16,10 +17,10 @@ public class Person {
     @Indexed
     private String ic;
     private String name;
-    @DateTimeFormat(iso = ISO.DATE)
+    @DateTimeFormat(iso = ISO.DATE, pattern = "dd/MM/yyyy")
     private Date dateOfBirth;
     private String description;
-    //string - movie objectid
+    private List<String> imagesObjectIds;
     private Map<String, JobTitle> roles;
 
 
@@ -30,6 +31,22 @@ public class Person {
         this.name = title;
         this.dateOfBirth = dateOfBirth;
         this.description = description;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getIc() {
+        return ic;
+    }
+
+    public void setIc(String ic) {
+        this.ic = ic;
     }
 
     public String getName() {
@@ -62,5 +79,13 @@ public class Person {
 
     public void setRoles(Map<String, JobTitle> roles) {
         this.roles = roles;
+    }
+
+    public List<String> getImagesObjectIds() {
+        return imagesObjectIds;
+    }
+
+    public void setImagesObjectIds(List<String> imagesObjectIds) {
+        this.imagesObjectIds = imagesObjectIds;
     }
 }

@@ -5,8 +5,11 @@ import com.app.movie.Genre;
 import com.app.movie.Movie;
 import com.app.movie.service.MovieService;
 import com.app.person.JobTitle;
+import com.app.person.Person;
+import com.app.person.service.PersonService;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
+import javafx.scene.shape.VLineTo;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -35,6 +38,9 @@ public class MyController {
     private MovieService movieService;
 
     @Autowired
+    private PersonService personService;
+
+    @Autowired
     private MediaService mediaService;
 
     @RequestMapping(value = {"/mymdb"}, method = RequestMethod.GET)
@@ -51,7 +57,7 @@ public class MyController {
     }
 
     @RequestMapping(value = "/mymdb/movies/search", params = {"query"}, method = RequestMethod.GET)
-    public @ResponseBody ModelAndView test(@RequestParam(value = "query") String query){
+    public @ResponseBody ModelAndView search(@RequestParam(value = "query") String query){
         ModelAndView model = new ModelAndView("showMovies");
         model.addObject("title","MyMDB - Search");
         model.addObject("movies", movieService.searchMovies(query));
@@ -60,7 +66,7 @@ public class MyController {
     }
 
     @RequestMapping(value = "/mymdb/movies", method = RequestMethod.GET)
-    public ModelAndView allMovie(){
+    public ModelAndView allMovies(){
         ModelAndView model = new ModelAndView("showMovies");
         model.addObject("title", "MyMDB - Movies");
         model.addObject("movies", movieService.getAllMovies());
@@ -106,12 +112,12 @@ public class MyController {
     }
 
     @RequestMapping(value = "/mymdb/movies/add", method = RequestMethod.GET)
-    public String add(){
+    public String addMovie(){
         return "addMovie";
     }
 
     @RequestMapping(value = "/mymdb/movies/add", method = RequestMethod.POST)
-    public ModelAndView add(@RequestParam(value = "title") String title,
+    public String addMovie(@RequestParam(value = "title") String title,
                             @RequestParam(value = "releaseDate", required = false) Date releaseDate,
                             @RequestParam(value = "runtime", required = false) Integer runtime,
                             @RequestParam(value = "synopsis", required = false) String synopsis,
@@ -133,52 +139,52 @@ public class MyController {
         if(genres != null)
             movie.setGenres(genres);
         //TODO:fix addition of nonexistant image id to movies without image
-        if(image.isEmpty()) {
-            List<String> images = new ArrayList<>();
-            DBObject metadata = new BasicDBObject();
-            metadata.put("title", imageTitle);
-
-            try {
-                images.add(mediaService.uploadImage(image, metadata));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            if(images.size() > 0)
-                movie.setImagesObjectIds(images);
-        }
+//        if(image != null) {
+//            List<String> images = new ArrayList<>();
+//            DBObject metadata = new BasicDBObject();
+//            metadata.put("title", imageTitle);
+//
+//            try {
+//                images.add(mediaService.uploadImage(image, metadata));
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//
+//            if(images.size() > 0)
+//                movie.setImagesObjectIds(images);
+//        }
+        movie.setImagesObjectIds(uploadImage(image, imageTitle));
 
         movie = movieService.addOrUpdateMovie(movie);
-
-        ModelAndView model = new ModelAndView("addMovie");
-        model.addObject("id", movie.getId());
-        return model;
+        return "addMovie";
     }
 
-    @RequestMapping(value = "/mymdb/media/upload", method = RequestMethod.GET)
-    public String uploadImage(){
-        return "uploadImage";
+    @RequestMapping(value = "/mymdb/people/add", method = RequestMethod.GET)
+    public String addPerson(){
+        return "addPerson";
     }
 
-    @RequestMapping(value = "/mymdb/media/upload", method = RequestMethod.POST)
-    public @ResponseBody ModelAndView uploadImage(@RequestParam("file") MultipartFile file,
-                                            @RequestParam("title") String title){
-        String imageId = "";
-        if(file != null) {
-            DBObject metadata = new BasicDBObject();
-            metadata.put("title", title);
-
-            try {
-                imageId = mediaService.uploadImage(file, metadata);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+    @RequestMapping(value = "/mymdb/people/add", method = RequestMethod.POST)
+    public String addPerson(@RequestParam(value = "name") String name,
+                                 @RequestParam(value = "dateOfBirth", required = false) Date dateOfBirth,
+                                 @RequestParam(value = "description", required = false) String description,
+                                 @RequestParam(value = "image", required = false) MultipartFile image,
+                                 @RequestParam(value = "imageTitle", required = false) String imageTitle){
+        Person person = new Person();
+        if(name != null){
+            person.setName(name);
+        }
+        if(dateOfBirth != null){
+            person.setDateOfBirth(dateOfBirth);
+        }
+        if(description != null){
+            person.setDescription(description);
         }
 
-        ModelAndView model = new ModelAndView("uploadImage");
-        model.addObject("id", imageId);
+        person.setImagesObjectIds(uploadImage(image, imageTitle));
 
-        return model;
+        personService.addOrUpdatePerson(person);
+        return "addPerson";
     }
 
     @RequestMapping(value = "/mymdb/media/get", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
@@ -201,5 +207,23 @@ public class MyController {
             userName = principal.toString();
         }
         return userName;
+    }
+
+    private List<String> uploadImage(MultipartFile image, String imageTitle){
+        if(image != null) {
+            List<String> images = new ArrayList<>();
+            DBObject metadata = new BasicDBObject();
+            metadata.put("title", imageTitle);
+
+            try {
+                images.add(mediaService.uploadImage(image, metadata));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            if (images.size() > 0)
+                return images;
+        }
+        return null;
     }
 }

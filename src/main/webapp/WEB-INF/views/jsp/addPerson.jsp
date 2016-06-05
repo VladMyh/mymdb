@@ -1,19 +1,16 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="script" uri="http://java.sun.com/jsp/jstl/core" %>
-<!DOCTYPE html>
-<html lang="en">
-
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<html>
 <head>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>MyMDB - Upload image</title>
-
+    <title>MyMDB - Add person</title>
     <!-- Bootstrap Core CSS -->
     <spring:url value="/resources/themes/css/bootstrap.min.css" var="CoreCss"/>
     <link href="${CoreCss}" rel="stylesheet">
@@ -24,8 +21,8 @@
 
     <!--Context path-->
     <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
-</head>
 
+</head>
 <body>
 
 <!-- Navigation -->
@@ -81,23 +78,38 @@
     <!-- Page Header -->
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">Upload image</h1>
+            <h1 class="page-header">Add person</h1>
         </div>
     </div>
 
     <div class="row">
-
-        <p>${id}</p>
-
-
         <div class="col-lg-6">
             <div class="input-group">
-                <form action="${contextPath}/mymdb/media/upload" method="post" enctype="multipart/form-data">
-                    Image: <input type="file" name="file"/>
-                    Title: <input type="text" name="title"/>
-                    <span class="input-group-btn">
-                        <input type="submit" class="btn btn-default" value="Upload"/>
-                    </span>
+                <form action="${contextPath}/mymdb/people/add" method="post" enctype="multipart/form-data">
+                    <fieldset class="form-group">
+                        <label>Name</label>
+                        <input type="text" name="name" class="form-control" placeholder="Name">
+                    </fieldset>
+                    <fieldset class="form-group">
+                        <label>Date of birth</label>
+                        <input type="date" class="form-control" placeholder="Another input">
+                    </fieldset>
+                    <fieldset class="form-group">
+                        <label>Description</label>
+                        <input type="text" name="description" class="form-control" placeholder="Another input">
+                    </fieldset>
+                    <fieldset>
+                        <label>Photo</label>
+                        <label class="file">
+                            <input type="file" name="image">
+                            <span class="file-custom"></span>
+                        </label>
+                    </fieldset>
+                    <fieldset class="form-group">
+                        <label>Photo title</label>
+                        <input type="text" name="imageTitle" class="form-control" placeholder="Another input">
+                    </fieldset>
+                    <button type="submit" class="btn btn-primary">Save</button>
                 </form>
             </div>
         </div>
@@ -126,5 +138,4 @@
     <script src="${JavaScript}"></script>
 
 </body>
-
 </html>

@@ -15,5 +15,4 @@ public interface MovieDao {
     List<Movie> searchMovies(String query);
 
     //TODO: finish paging method
-    //TODO: add method to load images into db
 }

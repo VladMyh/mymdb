@@ -17,12 +17,11 @@ public class Movie {
     private String id;
     @Indexed
     private String ic;
-    @DateTimeFormat(iso = ISO.DATE)
+    @DateTimeFormat(iso = ISO.DATE, pattern = "dd/MM/yyyy")
     private Date releaseDate;
     private String title;
     private String synopsis;
     private Integer runtimeMinutes;
-    //string - person objectid
     private Map<String, JobTitle> crew;
     private List<Genre> genres;
     private List<String> imagesObjectIds;
