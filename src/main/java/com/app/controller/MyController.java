@@ -12,6 +12,7 @@ import com.mongodb.DBObject;
 import javafx.scene.shape.VLineTo;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -118,7 +119,8 @@ public class MyController {
 
     @RequestMapping(value = "/mymdb/movies/add", method = RequestMethod.POST)
     public String addMovie(@RequestParam(value = "title") String title,
-                            @RequestParam(value = "releaseDate", required = false) Date releaseDate,
+                            @RequestParam(value = "releaseDate", required = false)
+                            @DateTimeFormat(pattern = "yyyy-MM-dd") Date releaseDate,
                             @RequestParam(value = "runtime", required = false) Integer runtime,
                             @RequestParam(value = "synopsis", required = false) String synopsis,
                             @RequestParam(value = "crew", required = false) Map<String, JobTitle> crew,
@@ -166,7 +168,8 @@ public class MyController {
 
     @RequestMapping(value = "/mymdb/people/add", method = RequestMethod.POST)
     public String addPerson(@RequestParam(value = "name") String name,
-                                 @RequestParam(value = "dateOfBirth", required = false) Date dateOfBirth,
+                                 @RequestParam(value = "dateOfBirth", required = false)
+                                 @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateOfBirth,
                                  @RequestParam(value = "description", required = false) String description,
                                  @RequestParam(value = "image", required = false) MultipartFile image,
                                  @RequestParam(value = "imageTitle", required = false) String imageTitle){

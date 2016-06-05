@@ -17,7 +17,7 @@ public class Person {
     @Indexed
     private String ic;
     private String name;
-    @DateTimeFormat(iso = ISO.DATE, pattern = "dd/MM/yyyy")
+    @DateTimeFormat(iso = ISO.DATE)
     private Date dateOfBirth;
     private String description;
     private List<String> imagesObjectIds;

@@ -17,7 +17,7 @@ public class Movie {
     private String id;
     @Indexed
     private String ic;
-    @DateTimeFormat(iso = ISO.DATE, pattern = "dd/MM/yyyy")
+    @DateTimeFormat(iso = ISO.DATE)
     private Date releaseDate;
     private String title;
     private String synopsis;

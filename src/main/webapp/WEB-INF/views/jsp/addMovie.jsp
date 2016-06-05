@@ -96,7 +96,7 @@
                     </fieldset>
                     <fieldset class="form-group">
                         <label>Release date</label>
-                        <input type="text" class="form-control" placeholder="Another input">
+                        <input type="text" name="releaseDate" class="form-control" placeholder="Another input">
                     </fieldset>
                     <fieldset class="form-group">
                         <label>Runtime</label>

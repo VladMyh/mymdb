@@ -92,7 +92,7 @@
                     </fieldset>
                     <fieldset class="form-group">
                         <label>Date of birth</label>
-                        <input type="date" class="form-control" placeholder="Another input">
+                        <input type="date" name="dateOfBirth" class="form-control" placeholder="Another input">
                     </fieldset>
                     <fieldset class="form-group">
                         <label>Description</label>
