@@ -1,6 +1,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="script" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -17,6 +18,7 @@
     <!-- Bootstrap Core CSS -->
     <spring:url value="/resources/themes/css/bootstrap.min.css" var="CoreCss"/>
     <link href="${CoreCss}" rel="stylesheet">
+    <link href="navbar-fixed-top.css" rel="stylesheet">
 
     <!-- Custom CSS -->
     <spring:url value="/resources/themes/css/3-col-portfolio.css" var="CustomCss"/>
@@ -28,12 +30,11 @@
 
 <body>
 
-<!-- Navigation -->
-<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+<!-- Fixed navbar -->
+<nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
-        <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
@@ -41,29 +42,38 @@
             </button>
             <a class="navbar-brand" href="${contextPath}/mymdb">MyMDB</a>
         </div>
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li>
-                    <a href="#">All movies</a>
-                </li>
-                <li>
-                    <a href="#">Genres</a>
-                </li>
-                <li>
-                    <a href="#">People</a>
-                </li>
-                <li>
-                    <a href="#">${user}</a><!--TODO:replace-->
-                </li>
-                <li>
-                    <a href="${contextPath}/mymdb/login">Login</a>
-                </li>
+                <li><a href="#">Movies</a></li>
+                <li><a href="#">Genres</a></li>
+                <li><a href="#">People</a></li>
+                <form class="navbar-form navbar-left" role="search" action="${contextPath}/mymdb/search" method="get">
+                    <div class="form-group">
+                        <input type="text" name="query" class="form-control" placeholder="Search">
+                    </div>
+                    <button type="submit" class="btn btn-default">Search</button>
+                </form>
+                <sec:authorize access="hasRole('ADMIN')">
+                    <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Admin tools<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-header">Content</li>
+                            <li><a href="${contextPath}/mymdb/movies/add">Add movie</a></li>
+                            <li><a href="${contextPath}/mymdb/people/add">Add person</a></li>
+                        </ul>
+                    </li>
+                </sec:authorize>
             </ul>
-        </div>
-        <!-- /.navbar-collapse -->
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#">${user}</a></li>
+                <sec:authorize access="isAnonymous()">
+                    <li><a href="${contextPath}/mymdb/login">Login</a></li>
+                </sec:authorize>
+                <sec:authorize access="hasRole('ADMIN')">
+                    <li><a href="${contextPath}/mymdb/logout">Logout</a></li>
+                </sec:authorize>
+            </ul>
+        </div><!--/.nav-collapse -->
     </div>
-    <!-- /.container -->
 </nav>
 
 <!-- Page Content -->
@@ -151,14 +161,7 @@
 
 <!-- /.container -->
 
-<!-- jQuery -->
-<script:url  value="/resources/themes/js/jquery.js" var="jQuery"/>
-<script src="${jQuery}"></script>
-
-<!-- Bootstrap Core JavaScript -->
-<script:url  value="/resources/theme/js/bootstrap.min.js" var="JavaScript"/>
-<script src="${JavaScript}"></script>
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 </body>
-
 </html>
