@@ -88,15 +88,15 @@
                 <form action="${contextPath}/mymdb/people/add" method="post" enctype="multipart/form-data">
                     <fieldset class="form-group">
                         <label>Name</label>
-                        <input type="text" name="name" class="form-control" placeholder="Name">
+                        <input type="text" name="name" class="form-control">
                     </fieldset>
                     <fieldset class="form-group">
                         <label>Date of birth</label>
-                        <input type="date" name="dateOfBirth" class="form-control" placeholder="Another input">
+                        <input type="date" name="dateOfBirth" class="form-control">
                     </fieldset>
                     <fieldset class="form-group">
                         <label>Description</label>
-                        <input type="text" name="description" class="form-control" placeholder="Another input">
+                        <input type="text" name="description" class="form-control">
                     </fieldset>
                     <fieldset>
                         <label>Photo</label>
@@ -107,7 +107,7 @@
                     </fieldset>
                     <fieldset class="form-group">
                         <label>Photo title</label>
-                        <input type="text" name="imageTitle" class="form-control" placeholder="Another input">
+                        <input type="text" name="imageTitle" class="form-control">
                     </fieldset>
                     <button type="submit" class="btn btn-primary">Save</button>
                 </form>

@@ -13,7 +13,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>MyMDB - Add movie</title>
+    <title>MyMDB - Edit ${movie.title}</title>
 
     <!-- Bootstrap Core CSS -->
     <spring:url value="/resources/themes/css/bootstrap.min.css" var="CoreCss"/>
@@ -82,33 +82,44 @@
     <!-- Page Header -->
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">Add movie</h1>
+            <h1 class="page-header">Edit movie</h1>
         </div>
     </div>
 
     <div class="row">
+        <div class="col-md-4">
+            <h3>Current poster</h3>
+            <c:if test="${movie.imagesObjectIds == null}">
+                <img class="img-responsive" src="http://placehold.it/242x328" width="242" height="328" alt="">
+            </c:if>
+            <c:if test="${movie.imagesObjectIds != null}">
+                <img class="img-responsive" src="${contextPath}/mymdb/media/get?id=${movie.imagesObjectIds.get(0)}" width="242" height="328" alt="">
+            </c:if>
+        </div>
+
         <div class="col-lg-6">
             <div class="input-group">
-                <form action="${contextPath}/mymdb/movies/add" method="post" enctype="multipart/form-data">
+                <form action="${contextPath}/mymdb/movies/update" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="id" value="${movie.id}"/>
                     <fieldset class="form-group">
                         <label>Title</label>
-                        <input type="text" name="title" class="form-control">
+                        <input type="text" name="title" class="form-control" value="${movie.title}">
                     </fieldset>
                     <fieldset class="form-group">
                         <label>Release date</label>
-                        <input type="date" name="releaseDate" class="form-control">
+                        <input type="date" name="releaseDate" class="form-control" value="${movie.releaseDate}">
                     </fieldset>
                     <fieldset class="form-group">
                         <label>Runtime</label>
-                        <input type="text" name="runtime" class="form-control">
+                        <input type="text" name="runtime" class="form-control" value="${movie.runtimeMinutes}">
                     </fieldset>
                     <fieldset class="form-group">
                         <label>Synopsis</label>
-                        <input type="text" name="synopsis" class="form-control">
+                        <input type="text" name="synopsis" class="form-control" value="${movie.synopsis}">
                     </fieldset>
                     <fieldset class="form-group">
                         <label>Genres</label>
-                        <input type="text" class="form-control">
+                        <input type="text" class="form-control" placeholder="Another input">
                     </fieldset>
                     <fieldset>
                         <label>Poster</label>
@@ -121,7 +132,8 @@
                         <label>Poster title</label>
                         <input type="text" name="imageTitle" class="form-control">
                     </fieldset>
-                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="submit" class="btn btn-primary">Update</button>
+                    <a href="${contextPath}/mymdb/movies/${movie.id}" class="btn btn-default" role="button">Back</a>
                 </form>
             </div>
         </div>

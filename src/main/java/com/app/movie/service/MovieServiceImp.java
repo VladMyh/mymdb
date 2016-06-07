@@ -26,12 +26,12 @@ public class MovieServiceImp implements MovieService {
 
     @Override
     public void deleteMovie(String id) {
-
+        movieDao.deleteMovie(id);
     }
 
     @Override
     public long getNumberOfFilms() {
-        return 0;
+        return movieDao.getNumberOfFilms();
     }
 
     @Override

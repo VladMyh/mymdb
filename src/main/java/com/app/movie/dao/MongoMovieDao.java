@@ -30,7 +30,9 @@ public class MongoMovieDao implements MovieDao {
 
     @Override
     public void deleteMovie(String id) {
-        mongoOperation.remove(id);
+        Movie movie = new Movie();
+		movie.setId(id);
+        mongoOperation.remove(movie);
     }
 
     @Override

@@ -9,7 +9,6 @@ import com.app.person.Person;
 import com.app.person.service.PersonService;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
-import javafx.scene.shape.VLineTo;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -88,6 +87,14 @@ public class MyController {
 		return "showMovies";
 	}
 
+	@RequestMapping(value = "/mymdb/movies/{id}/edit", method = RequestMethod.GET)
+	public ModelAndView editMovie(@PathVariable(value = "id") String id){
+		ModelAndView model = new ModelAndView("editMovie");
+		model.addObject("movie", movieService.getMovieById(id));
+
+		return model;
+	}
+
     @RequestMapping(value = "/mymdb/admin**", method = RequestMethod.GET)
     public String adminPage(){
         return "admin";
@@ -119,12 +126,13 @@ public class MyController {
     }
 
     @RequestMapping(value = "/mymdb/movies/add", method = RequestMethod.GET)
-    public String addMovie(){
+    public String addOrUpdateMovie(){
         return "addMovie";
     }
 
-    @RequestMapping(value = "/mymdb/movies/add", method = RequestMethod.POST)
-    public String addMovie(@RequestParam(value = "title") String title,
+    @RequestMapping(value = {"/mymdb/movies/add", "/mymdb/movies/update"}, method = RequestMethod.POST)
+    public String addOrUpdateMovie(@RequestParam(value = "id", required = false) String id,
+							@RequestParam(value = "title") String title,
                             @RequestParam(value = "releaseDate", required = false)
                             @DateTimeFormat(pattern = "yyyy-MM-dd") Date releaseDate,
                             @RequestParam(value = "runtime", required = false) Integer runtime,
@@ -134,6 +142,13 @@ public class MyController {
                             @RequestParam(value = "image", required = false) MultipartFile image,
                             @RequestParam(value = "imageTitle", required = false) String imageTitle){
         Movie movie = new Movie();
+		String result;
+		if(id != null) {
+			movie = movieService.getMovieById(id);
+			result = "redirect:/mymdb/movies/" + id;
+		}
+		else
+			result = "addMovie";
         if(title != null)
             movie.setTitle(title);
         if(releaseDate != null)
@@ -146,11 +161,12 @@ public class MyController {
             movie.setCrew(crew);
         if(genres != null)
             movie.setGenres(genres);
+		if(!image.isEmpty())
+        	movie.setImagesObjectIds(uploadImage(image, imageTitle));
 
-        movie.setImagesObjectIds(uploadImage(image, imageTitle));
+        movieService.addOrUpdateMovie(movie);
 
-        movie = movieService.addOrUpdateMovie(movie);
-        return "addMovie";
+        return result;
     }
 
     @RequestMapping(value = "/mymdb/people/add", method = RequestMethod.GET)
@@ -168,7 +184,7 @@ public class MyController {
         Person person = new Person();
         if(name != null)
             person.setName(name);
-        if(dateOfBirth != null
+        if(dateOfBirth != null)
             person.setDateOfBirth(dateOfBirth);
         if(description != null)
             person.setDescription(description);

@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="script" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -111,6 +112,10 @@
                     </c:forEach>
                     </ul>
                 </c:if>
+                <sec:authorize access="hasRole('ADMIN')">
+                    <a href="${contextPath}/mymdb/movies/${movie.id}/edit" class="btn btn-default" role="button">Edit</a>
+                    <a href="${contextPath}/mymdb/movies/${movie.id}/delete" class="btn btn-danger" role="button">Delete</a>
+                </sec:authorize>
             </div>
 
         </div>

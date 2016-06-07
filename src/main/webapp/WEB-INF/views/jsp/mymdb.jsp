@@ -53,7 +53,7 @@
                 </li>
                 <li>
                     <a href="#">People</a>
-                </li
+                </li>
                 <sec:authorize access="hasAnyRole('ADMIN', 'USER')"/>
                 <li>
                     <a href="#">${user}</a><!--TODO:replace-->
