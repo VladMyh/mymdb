@@ -1,6 +1,8 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="script" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,7 +14,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>${title}</title>
+    <title>MyMDB - ${person.name}</title>
 
     <!-- Bootstrap Core CSS -->
     <spring:url value="/resources/themes/css/bootstrap.min.css" var="CoreCss"/>
@@ -24,6 +26,8 @@
 
     <!--Context path-->
     <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
+    <c:set var="img_width" value="242"/>
+    <c:set var="img_height" value="328"/>
 </head>
 
 <body>
@@ -69,95 +73,64 @@
 <!-- Page Content -->
 <div class="container">
 
-    <!-- Page Header -->
+    <!-- Portfolio Item Heading -->
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">Search
-                <small>${people.size()} results</small></h1>
-        </div>
-    </div>
-    <!--Rows-->
-
-    <c:forEach var="i" items="${people}" varStatus="stat">
-        <c:if test="${stat.index % 3 == 0}">
-            <div class="row">
-        </c:if>
-        <div class="col-md-4 portfolio-item">
-            <a href="${contextPath}/mymdb/people/${i.id}">
-                <c:if test="${i.imagesObjectIds == null}">
-                    <img class="img-responsive" src="http://placehold.it/202x288" width="202" height="288" alt="">
-                </c:if>
-                <c:if test="${i.imagesObjectIds != null}">
-                    <img class="img-responsive" src="${contextPath}/mymdb/media/get?id=${i.imagesObjectIds.get(0)}"
-                         width="202" height="288" alt="">
-                </c:if>
-            </a>
-            <h3>
-                <a href="${contextPath}/mymdb/people/${i.id}">${i.name}</a>
-            </h3>
-        </div>
-        <c:if test="${stat.index % 3 == 2}">
-            </div>
-        </c:if>
-    </c:forEach>
-    <c:if test="${people.size() % 3 != 0}">
-</div>
-</c:if>
-
-<hr>
-
-<!-- Pagination -->
-<div class="row text-center">
-    <div class="col-lg-12">
-        <ul class="pagination">
-            <li>
-                <a href="#">&laquo;</a>
-            </li>
-            <li class="active">
-                <a href="#">1</a>
-            </li>
-            <li>
-                <a href="#">2</a>
-            </li>
-            <li>
-                <a href="#">3</a>
-            </li>
-            <li>
-                <a href="#">4</a>
-            </li>
-            <li>
-                <a href="#">5</a>
-            </li>
-            <li>
-                <a href="#">&raquo;</a>
-            </li>
-        </ul>
-    </div>
-</div>
-<!-- /.row -->
-
-<hr>
-
-<!-- Footer -->
-<footer>
-    <div class="row">
-        <div class="col-lg-12">
-            <p>Copyright &copy; MyMDB 2016</p>
+            <h1 class="page-header">${person.name}</h1>
         </div>
     </div>
     <!-- /.row -->
-</footer>
 
+    <!-- Portfolio Item Row -->
+    <div class="row">
 
+        <div class="col-md-8">
+            <c:if test="${person.imagesObjectIds == null}">
+                <img class="img-responsive" src="http://placehold.it/${img_width}x${img_height}" width="${img_width}" height="${img_height}" alt="">
+            </c:if>
+            <c:if test="${person.imagesObjectIds != null}">
+                <img class="img-responsive" src="${contextPath}/mymdb/media/get?id=${person.imagesObjectIds.get(0)}" width="${img_width}" height="${img_height}" alt="">
+            </c:if>
+        </div>
+
+        <div class="col-md-4">
+            <c:if test="${person.description != null}">
+                <h3>Description</h3>
+                <p>${person.description}</p>
+            </c:if>
+            <c:if test="${person.dateOfBirth != null}">
+                <h3>Date of birth</h3>
+                <p><fmt:formatDate pattern="dd/MM/yyyy" value="${person.dateOfBirth}"/></p>
+            </c:if>
+            <sec:authorize access="hasRole('ADMIN')">
+                <a href="${contextPath}/mymdb/people/${person.id}/edit" class="btn btn-default" role="button">Edit</a>
+                <a href="${contextPath}/mymdb/people/${person.id}/delete" class="btn btn-danger" role="button">Delete</a>
+            </sec:authorize>
+        </div>
+
+    </div>
+    <!-- /.row -->
+
+    <hr>
+
+    <!-- Footer -->
+    <footer>
+        <div class="row">
+            <div class="col-lg-12">
+                <p>Copyright &copy; Your Website 2014</p>
+            </div>
+        </div>
+        <!-- /.row -->
+    </footer>
+
+</div>
 <!-- /.container -->
 
 <!-- jQuery -->
-<script:url  value="/resources/themes/js/jquery.js" var="jQuery"/>
-<script src="${jQuery}"></script>
+<script src="js/jquery.js"></script>
 
 <!-- Bootstrap Core JavaScript -->
-<script:url  value="/resources/theme/js/bootstrap.min.js" var="JavaScript"/>
-<script src="${JavaScript}"></script>
+<script src="js/bootstrap.min.js"></script>
 
 </body>
 

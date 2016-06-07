@@ -24,7 +24,9 @@ public class MongoPersonDao implements PersonDao {
     }
 
     @Override
-    public void deletePerson(Person person) {
+    public void deletePerson(String id) {
+        Person person = new Person();
+        person.setId(id);
         mongoOperation.remove(person);
     }
 

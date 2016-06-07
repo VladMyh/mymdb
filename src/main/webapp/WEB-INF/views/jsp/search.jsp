@@ -80,6 +80,13 @@
     </div>
     <!--Rows-->
 
+    <c:if test="${movies.size() == 0 && people.size() == 0}">
+        <div class="alert alert-warning alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            Nothing found for your request "${query}"
+        </div>
+    </c:if>
+
     <c:if test="${movies.size() > 0}">
         <div class="panel panel-default">
             <div class="panel-heading">Movies, <a href="${contextPath}/mymdb/movies/search?query=${query}">see all...</a></div>
@@ -123,7 +130,7 @@
                 <c:forEach var="i" items="${people}" varStatus="stat">
                     <tr>
                         <td>
-                            <a href="${contextPath}/mymdb/movies/${i.id}">
+                            <a href="${contextPath}/mymdb/people/${i.id}">
                                 <c:if test="${i.imagesObjectIds == null}">
                                     <img class="img-responsive" src="http://placehold.it/${img_width}x${img_height}" width="${img_width}" height="${img_height}" alt="">
                                 </c:if>
@@ -135,7 +142,7 @@
                         </td>
                         <td>
                             <h3>
-                                <a href="${contextPath}/mymdb/movies/${i.id}">${i.name}</a>
+                                <a href="${contextPath}/mymdb/people/${i.id}">${i.name}</a>
                             </h3>
                         </td>
                     </tr>

@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface PersonDao {
     Person addOrUpdatePerson(Person person);
-    void deletePerson(Person person);
+    void deletePerson(String id);
     Person getPersonById(String id);
     List<Person> search(String query);
 }

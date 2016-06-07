@@ -104,7 +104,7 @@ public class MyController {
     @RequestMapping(value = "/mymdb/movies/{id}/delete", method = RequestMethod.GET)
 	public String deleteMovie(@PathVariable(value = "id") String id){
 		movieService.deleteMovie(id);
-		return "showMovies";
+		return "mymdb";
 	}
 
 	@RequestMapping(value = "/mymdb/movies/{id}/edit", method = RequestMethod.GET)
@@ -152,15 +152,15 @@ public class MyController {
 
     @RequestMapping(value = {"/mymdb/movies/add", "/mymdb/movies/update"}, method = RequestMethod.POST)
     public String addOrUpdateMovie(@RequestParam(value = "id", required = false) String id,
-							@RequestParam(value = "title") String title,
-                            @RequestParam(value = "releaseDate", required = false)
-                            @DateTimeFormat(pattern = "yyyy-MM-dd") Date releaseDate,
-                            @RequestParam(value = "runtime", required = false) Integer runtime,
-                            @RequestParam(value = "synopsis", required = false) String synopsis,
-                            @RequestParam(value = "crew", required = false) Map<String, JobTitle> crew,
-                            @RequestParam(value = "genres", required = false) List<Genre> genres,
-                            @RequestParam(value = "image", required = false) MultipartFile image,
-                            @RequestParam(value = "imageTitle", required = false) String imageTitle){
+								   @RequestParam(value = "title") String title,
+								   @RequestParam(value = "releaseDate", required = false)
+									   @DateTimeFormat(pattern = "yyyy-MM-dd") Date releaseDate,
+								   @RequestParam(value = "runtime", required = false) Integer runtime,
+								   @RequestParam(value = "synopsis", required = false) String synopsis,
+								   @RequestParam(value = "crew", required = false) Map<String, JobTitle> crew,
+								   @RequestParam(value = "genres", required = false) List<Genre> genres,
+								   @RequestParam(value = "image", required = false) MultipartFile image,
+								   @RequestParam(value = "imageTitle", required = false) String imageTitle){
         Movie movie = new Movie();
 		String result;
 		if(id != null) {
@@ -185,7 +185,6 @@ public class MyController {
         	movie.setImagesObjectIds(uploadImage(image, imageTitle));
 
         movieService.addOrUpdateMovie(movie);
-
         return result;
     }
 
@@ -194,26 +193,56 @@ public class MyController {
         return "addPerson";
     }
 
-    @RequestMapping(value = "/mymdb/people/add", method = RequestMethod.POST)
-    public String addPerson(@RequestParam(value = "name") String name,
-                                 @RequestParam(value = "dateOfBirth", required = false)
-                                 @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateOfBirth,
-                                 @RequestParam(value = "description", required = false) String description,
-                                 @RequestParam(value = "image", required = false) MultipartFile image,
-                                 @RequestParam(value = "imageTitle", required = false) String imageTitle){
+    @RequestMapping(value = {"/mymdb/people/add", "/mymdb/people/update"}, method = RequestMethod.POST)
+    public String addPerson(@RequestParam(value = "id", required = false) String id,
+							@RequestParam(value = "name") String name,
+                            @RequestParam(value = "dateOfBirth", required = false)
+								@DateTimeFormat(pattern = "yyyy-MM-dd") Date dateOfBirth,
+                            @RequestParam(value = "description", required = false) String description,
+                            @RequestParam(value = "image", required = false) MultipartFile image,
+                            @RequestParam(value = "imageTitle", required = false) String imageTitle){
         Person person = new Person();
+		String result;
+		if(id != null) {
+			person = personService.getPersonById(id);
+			result = "redirect:/mymdb/people/" + id;
+		}
+		else
+			result = "addPerson";
         if(name != null)
             person.setName(name);
         if(dateOfBirth != null)
             person.setDateOfBirth(dateOfBirth);
         if(description != null)
             person.setDescription(description);
-
-        person.setImagesObjectIds(uploadImage(image, imageTitle));
+		if(!image.isEmpty())
+        	person.setImagesObjectIds(uploadImage(image, imageTitle));
 
         personService.addOrUpdatePerson(person);
-        return "addPerson";
+        return result;
     }
+
+	@RequestMapping(value = "/mymdb/people/{id}", method = RequestMethod.GET)
+	public @ResponseBody ModelAndView viewPerson(@PathVariable String id){
+		ModelAndView model = new ModelAndView("viewPerson");
+		model.addObject("person", personService.getPersonById(id));
+
+		return model;
+	}
+
+	@RequestMapping(value = "/mymdb/people/{id}/delete", method = RequestMethod.GET)
+	public String deletePerson(@PathVariable(value = "id") String id){
+		personService.deletePerson(id);
+		return "mymdb";
+	}
+
+	@RequestMapping(value = "/mymdb/people/{id}/edit", method = RequestMethod.GET)
+	public ModelAndView editPerson(@PathVariable(value = "id") String id){
+		ModelAndView model = new ModelAndView("editPerson");
+		model.addObject("person", personService.getPersonById(id));
+
+		return model;
+	}
 
     @RequestMapping(value = "/mymdb/media/get", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
     public @ResponseBody byte[] getImageById(@RequestParam("id") String id){

@@ -19,8 +19,8 @@ public class PersonServiceImp implements PersonService{
     }
 
     @Override
-    public void deletePerson(Person person) {
-        personDao.deletePerson(person);
+    public void deletePerson(String id) {
+        personDao.deletePerson(id);
     }
 
     @Override
