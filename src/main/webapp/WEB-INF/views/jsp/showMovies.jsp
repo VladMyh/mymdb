@@ -83,7 +83,7 @@
                 <div class="row">
             </c:if>
                 <div class="col-md-4 portfolio-item">
-                    <a href="${contextPath}/mymdb/movies/view?id=${i.id}">
+                    <a href="${contextPath}/mymdb/movies/${i.id}">
                         <c:if test="${i.imagesObjectIds == null}">
                             <img class="img-responsive" src="http://placehold.it/202x288" width="202" height="288" alt="">
                         </c:if>
@@ -93,7 +93,7 @@
                         </c:if>
                     </a>
                     <h3>
-                        <a href="${contextPath}/mymdb/movies/view?id=${i.id}">${i.title}</a>
+                        <a href="${contextPath}/mymdb/movies/${i.id}">${i.title}</a>
                     </h3>
                     <p>${i.synopsis}</p>
                 </div>

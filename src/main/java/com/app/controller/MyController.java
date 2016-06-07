@@ -74,13 +74,19 @@ public class MyController {
         return model;
     }
 
-    @RequestMapping(value = "/mymdb/movies/view", params = {"id"}, method = RequestMethod.GET)
-    public @ResponseBody ModelAndView viewMovie(@RequestParam(value = "id") String id){
+    @RequestMapping(value = "/mymdb/movies/{id}", method = RequestMethod.GET)
+    public @ResponseBody ModelAndView viewMovie(@PathVariable String id){
         ModelAndView model = new ModelAndView("viewMovie");
         model.addObject("movie", movieService.getMovieById(id));
 
         return model;
     }
+
+    @RequestMapping(value = "/mymdb/movies/{id}/delete", method = RequestMethod.GET)
+	public String deleteMovie(@PathVariable(value = "id") String id){
+		movieService.deleteMovie(id);
+		return "showMovies";
+	}
 
     @RequestMapping(value = "/mymdb/admin**", method = RequestMethod.GET)
     public String adminPage(){
@@ -140,21 +146,7 @@ public class MyController {
             movie.setCrew(crew);
         if(genres != null)
             movie.setGenres(genres);
-        //TODO:fix addition of nonexistant image id to movies without image
-//        if(image != null) {
-//            List<String> images = new ArrayList<>();
-//            DBObject metadata = new BasicDBObject();
-//            metadata.put("title", imageTitle);
-//
-//            try {
-//                images.add(mediaService.uploadImage(image, metadata));
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//
-//            if(images.size() > 0)
-//                movie.setImagesObjectIds(images);
-//        }
+
         movie.setImagesObjectIds(uploadImage(image, imageTitle));
 
         movie = movieService.addOrUpdateMovie(movie);
@@ -174,15 +166,12 @@ public class MyController {
                                  @RequestParam(value = "image", required = false) MultipartFile image,
                                  @RequestParam(value = "imageTitle", required = false) String imageTitle){
         Person person = new Person();
-        if(name != null){
+        if(name != null)
             person.setName(name);
-        }
-        if(dateOfBirth != null){
+        if(dateOfBirth != null
             person.setDateOfBirth(dateOfBirth);
-        }
-        if(description != null){
+        if(description != null)
             person.setDescription(description);
-        }
 
         person.setImagesObjectIds(uploadImage(image, imageTitle));
 
@@ -213,7 +202,7 @@ public class MyController {
     }
 
     private List<String> uploadImage(MultipartFile image, String imageTitle){
-        if(image != null) {
+        if(!image.isEmpty()) {
             List<String> images = new ArrayList<>();
             DBObject metadata = new BasicDBObject();
             metadata.put("title", imageTitle);

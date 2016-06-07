@@ -74,7 +74,9 @@
         <div class="row">
             <div class="col-lg-12">
                 <h1 class="page-header">${movie.title}
-                    <small>${movie.runtimeMinutes} min</small>
+                    <c:if test="${movie.runtimeMinutes != null}">
+                        <small>${movie.runtimeMinutes} min</small>
+                    </c:if>
                 </h1>
             </div>
         </div>
@@ -85,24 +87,30 @@
 
             <div class="col-md-8">
                 <c:if test="${movie.imagesObjectIds == null}">
-                    <img class="img-responsive" src="http://placehold.it/182x268" width="182" height="268" alt="">
+                    <img class="img-responsive" src="http://placehold.it/242x328" width="242" height="328" alt="">
                 </c:if>
                 <c:if test="${movie.imagesObjectIds != null}">
-                    <img class="img-responsive" src="${contextPath}/mymdb/media/get?id=${movie.imagesObjectIds.get(0)}" width="182" height="268" alt="">
+                    <img class="img-responsive" src="${contextPath}/mymdb/media/get?id=${movie.imagesObjectIds.get(0)}" width="242" height="328" alt="">
                 </c:if>
             </div>
 
             <div class="col-md-4">
-                <h3>Synopsis</h3>
-                <p>${movie.synopsis}</p>
-                <h3>Release date</h3>
-                <p><fmt:formatDate pattern="dd/MM/yyyy" value="${movie.releaseDate}" /></p>
-                <h3>Genres</h3>
-                <ul>
-                <c:forEach var="i" items="${movie.genres}">
-                    <li>${i.name()}</li>
-                </c:forEach>
-                </ul>
+                <c:if test="${movie.synopsis != null}">
+                    <h3>Synopsis</h3>
+                    <p>${movie.synopsis}</p>
+                </c:if>
+                <c:if test="${movie.releaseDate != null}">
+                    <h3>Release date</h3>
+                    <p><fmt:formatDate pattern="dd/MM/yyyy" value="${movie.releaseDate}" /></p>
+                </c:if>
+                <c:if test="${movie.genres != null}">
+                    <h3>Genres</h3>
+                    <ul>
+                    <c:forEach var="i" items="${movie.genres}">
+                        <li>${i.name()}</li>
+                    </c:forEach>
+                    </ul>
+                </c:if>
             </div>
 
         </div>
