@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="script" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -107,7 +108,8 @@
                     </fieldset>
                     <fieldset class="form-group">
                         <label>Release date</label>
-                        <input type="date" name="releaseDate" class="form-control" value="${movie.releaseDate}">
+                        <fmt:formatDate pattern="yyyy-MM-dd" value="${movie.releaseDate}" var="date"/>
+                        <input type="date" name="releaseDate" class="form-control" value="${date}">
                     </fieldset>
                     <fieldset class="form-group">
                         <label>Runtime</label>

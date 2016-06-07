@@ -1,7 +1,6 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="script" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -13,7 +12,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>MyMDB - Main Page</title>
+    <title>${title}</title>
 
     <!-- Bootstrap Core CSS -->
     <spring:url value="/resources/themes/css/bootstrap.min.css" var="CoreCss"/>
@@ -54,22 +53,12 @@
                 <li>
                     <a href="#">People</a>
                 </li>
-                <sec:authorize access="hasAnyRole('ADMIN', 'USER')"/>
                 <li>
                     <a href="#">${user}</a><!--TODO:replace-->
                 </li>
-                <%--</sec:authorize>--%>
-                <%--<sec:authorize access="isAnonymous()">--%>
-                    <li>
-                        <a href="${contextPath}/mymdb/login">Login</a>
-                    </li>
-                <%--</sec:authorize>--%>
-                <%--<sec:authorize access="hasAnyRole('ADMIN', 'USER')">--%>
-                    <%--<li>--%>
-                        <%--<a href="${contextPath}/mymdb/logout">Logout</a>--%>
-                    <%--</li>--%>
-                <%--</sec:authorize>--%>
-
+                <li>
+                    <a href="${contextPath}/mymdb/login">Login</a>
+                </li>
             </ul>
         </div>
         <!-- /.navbar-collapse -->
@@ -83,22 +72,69 @@
     <!-- Page Header -->
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">Main page</h1>
+            <h1 class="page-header">Search
+                <small>${people.size()} results</small></h1>
         </div>
     </div>
+    <!--Rows-->
 
-    <div class="row">
-        <div class="col-lg-6">
-            <form action="${contextPath}/mymdb/search" method="get">
-            <div class="input-group">
-                <input type="text" class="form-control" name="query" placeholder="Search for...">
-                <span class="input-group-btn">
-                    <input type="submit" class="btn btn-default" value="Search"/>
-                </span>
-            </div>
-            </form>
+    <c:forEach var="i" items="${people}" varStatus="stat">
+        <c:if test="${stat.index % 3 == 0}">
+            <div class="row">
+        </c:if>
+        <div class="col-md-4 portfolio-item">
+            <a href="${contextPath}/mymdb/movies/${i.id}">
+                <c:if test="${i.imagesObjectIds == null}">
+                    <img class="img-responsive" src="http://placehold.it/202x288" width="202" height="288" alt="">
+                </c:if>
+                <c:if test="${i.imagesObjectIds != null}">
+                    <img class="img-responsive" src="${contextPath}/mymdb/media/get?id=${i.imagesObjectIds.get(0)}"
+                         width="202" height="288" alt="">
+                </c:if>
+            </a>
+            <h3>
+                <a href="${contextPath}/mymdb/movies/${i.id}">${i.name}</a>
+            </h3>
         </div>
+        <c:if test="${stat.index % 3 == 2}">
+            </div>
+        </c:if>
+    </c:forEach>
+    <c:if test="${people.size() % 3 != 0}">
+</div>
+</c:if>
+
+<hr>
+
+<!-- Pagination -->
+<div class="row text-center">
+    <div class="col-lg-12">
+        <ul class="pagination">
+            <li>
+                <a href="#">&laquo;</a>
+            </li>
+            <li class="active">
+                <a href="#">1</a>
+            </li>
+            <li>
+                <a href="#">2</a>
+            </li>
+            <li>
+                <a href="#">3</a>
+            </li>
+            <li>
+                <a href="#">4</a>
+            </li>
+            <li>
+                <a href="#">5</a>
+            </li>
+            <li>
+                <a href="#">&raquo;</a>
+            </li>
+        </ul>
     </div>
+</div>
+<!-- /.row -->
 
 <hr>
 
@@ -111,6 +147,7 @@
     </div>
     <!-- /.row -->
 </footer>
+
 
 <!-- /.container -->
 

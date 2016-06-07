@@ -53,6 +53,6 @@ public class MongoMovieDao implements MovieDao {
     @Override
     public List<Movie> searchMovies(String name) {
         Pattern pattern = Pattern.compile(name, Pattern.CASE_INSENSITIVE);
-        return (ArrayList<Movie>) mongoOperation.find(new Query(Criteria.where("title").regex(pattern)), Movie.class);
+        return mongoOperation.find(new Query(Criteria.where("title").regex(pattern)), Movie.class);
     }
 }

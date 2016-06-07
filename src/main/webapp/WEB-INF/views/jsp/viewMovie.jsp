@@ -102,7 +102,7 @@
                 </c:if>
                 <c:if test="${movie.releaseDate != null}">
                     <h3>Release date</h3>
-                    <p><fmt:formatDate pattern="dd/MM/yyyy" value="${movie.releaseDate}" /></p>
+                    <p><fmt:formatDate pattern="dd/MM/yyyy" value="${movie.releaseDate}"/></p>
                 </c:if>
                 <c:if test="${movie.genres != null}">
                     <h3>Genres</h3>

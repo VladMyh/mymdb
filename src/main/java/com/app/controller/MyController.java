@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 public class MyController {
@@ -56,14 +57,33 @@ public class MyController {
         return "redirect:/mymdb";
     }
 
-    @RequestMapping(value = "/mymdb/movies/search", params = {"query"}, method = RequestMethod.GET)
+    @RequestMapping(value = "/mymdb/search", params = {"query"}, method = RequestMethod.GET)
     public @ResponseBody ModelAndView search(@RequestParam(value = "query") String query){
-        ModelAndView model = new ModelAndView("showMovies");
-        model.addObject("title","MyMDB - Search");
-        model.addObject("movies", movieService.searchMovies(query));
+        ModelAndView model = new ModelAndView("search");
+        model.addObject("movies", movieService.searchMovies(query).stream().limit(9).collect(Collectors.toList()));
+		model.addObject("people", personService.search(query).stream().limit(9).collect(Collectors.toList()));
         model.addObject("user", getPrincipal());
+		model.addObject("query", query);
         return model;
     }
+
+	@RequestMapping(value = "/mymdb/people/search", params = {"query"}, method = RequestMethod.GET)
+	public @ResponseBody ModelAndView searchPeople(@RequestParam(value = "query") String query){
+		ModelAndView model = new ModelAndView("showPeople");
+		model.addObject("title","MyMDB - Search");
+		model.addObject("people", personService.search(query));
+		model.addObject("user", getPrincipal());
+		return model;
+	}
+
+	@RequestMapping(value = "/mymdb/movies/search", params = {"query"}, method = RequestMethod.GET)
+	public @ResponseBody ModelAndView searchMovies(@RequestParam(value = "query") String query){
+		ModelAndView model = new ModelAndView("showMovies");
+		model.addObject("title","MyMDB - Search");
+		model.addObject("movies", movieService.searchMovies(query));
+		model.addObject("user", getPrincipal());
+		return model;
+	}
 
     @RequestMapping(value = "/mymdb/movies", method = RequestMethod.GET)
     public ModelAndView allMovies(){
