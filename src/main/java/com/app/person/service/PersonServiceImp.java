@@ -32,4 +32,9 @@ public class PersonServiceImp implements PersonService{
     public List<Person> search(String query) {
         return personDao.search(query);
     }
+
+    @Override
+    public List<Person> getPage(int pageNum, int pageSize, String searchQuery) {
+        return personDao.getPage(pageNum, pageSize, searchQuery);
+    }
 }

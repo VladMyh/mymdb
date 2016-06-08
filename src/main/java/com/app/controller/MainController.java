@@ -70,11 +70,14 @@ public class MainController {
     }
 
 	@RequestMapping(value = "/mymdb/people/search", method = RequestMethod.GET)
-	public @ResponseBody ModelAndView searchPeople(@RequestParam(value = "query") String query){
+	public @ResponseBody ModelAndView searchPeople(@RequestParam(value = "query") String query,
+												   @RequestParam(value = "page") Integer pageNum){
 		ModelAndView model = new ModelAndView("showPeople");
 		model.addObject("title","MyMDB - Search");
-		model.addObject("people", personService.search(query));
+		model.addObject("people", personService.getPage(pageNum, searchPageSize, query));
 		model.addObject("user", getPrincipal());
+		model.addObject("pageNum", pageNum);
+		model.addObject("pageSize", searchPageSize);
 		return model;
 	}
 

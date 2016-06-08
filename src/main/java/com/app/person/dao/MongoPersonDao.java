@@ -2,6 +2,8 @@ package com.app.person.dao;
 
 import com.app.person.Person;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -40,4 +42,15 @@ public class MongoPersonDao implements PersonDao {
         Pattern pattern = Pattern.compile(query, Pattern.CASE_INSENSITIVE);
         return mongoOperation.find(new Query(Criteria.where("name").regex(pattern)), Person.class);
     }
+
+	@Override
+	public List<Person> getPage(int pageNum, int pageSize, String searchQuery) {
+		Pattern pattern = Pattern.compile(searchQuery, Pattern.CASE_INSENSITIVE);
+		Pageable pageable = new PageRequest(pageNum, pageSize);
+		Query query = new Query();
+		query.with(pageable);
+		query.addCriteria(Criteria.where("name").regex(pattern));
+
+		return mongoOperation.find(query, Person.class);
+	}
 }

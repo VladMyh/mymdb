@@ -9,4 +9,5 @@ public interface PersonDao {
     void deletePerson(String id);
     Person getPersonById(String id);
     List<Person> search(String query);
+	List<Person> getPage(int pageNum, int pageSize, String searchQuery);
 }

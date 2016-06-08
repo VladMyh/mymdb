@@ -9,4 +9,5 @@ public interface PersonService {
     void deletePerson(String id);
     Person getPersonById(String id);
     List<Person> search(String query);
+	List<Person> getPage(int pageNum, int pageSize, String searchQuery);
 }

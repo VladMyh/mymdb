@@ -132,7 +132,7 @@
 
     <c:if test="${people.size() > 0}">
     <div class="panel panel-default">
-        <div class="panel-heading">People, <a href="${contextPath}/mymdb/people/search?query=${query}">see all...</a></div>
+        <div class="panel-heading">People, <a href="${contextPath}/mymdb/people/search?query=${query}&page=1">see all...</a></div>
         <div class="panel-body">
 
             <table class="table">
