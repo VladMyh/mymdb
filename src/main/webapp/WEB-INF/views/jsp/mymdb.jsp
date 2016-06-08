@@ -42,9 +42,9 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li><a href="#">Movies</a></li>
+                <li><a href="${contextPath}/mymdb/movies?page=0">Movies</a></li>
                 <li><a href="#">Genres</a></li>
-                <li><a href="#">People</a></li>
+                <li><a href="${contextPath}/mymdb/people?page=0">People</a></li>
                 <form class="navbar-form navbar-left" role="search" action="${contextPath}/mymdb/search" method="get">
                     <div class="form-group">
                         <input type="text" name="query" class="form-control" placeholder="Search">
@@ -80,8 +80,9 @@
     <!-- Page Header -->
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">Main page</h1>
+            <h1 class="page-header">Welcome to MyMDB!</h1>
         </div>
+
     </div>
 
 <hr>

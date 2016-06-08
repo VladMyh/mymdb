@@ -37,4 +37,9 @@ public class PersonServiceImp implements PersonService{
     public List<Person> getPage(int pageNum, int pageSize, String searchQuery) {
         return personDao.getPage(pageNum, pageSize, searchQuery);
     }
+
+    @Override
+    public List<Person> getAllMovies(int pageNum, int pageSize) {
+        return personDao.getAllPeople(pageNum, pageSize);
+    }
 }

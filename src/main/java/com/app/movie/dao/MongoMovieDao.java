@@ -9,7 +9,6 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -20,8 +19,12 @@ public class MongoMovieDao implements MovieDao {
     private MongoOperations mongoOperation;
 
     @Override
-    public ArrayList<Movie> getAllMovies() {
-        return null;
+    public List<Movie> getAllMovies(int pageNum, int pageSize) {
+		Pageable pageable = new PageRequest(pageNum, pageSize);
+		Query query = new Query();
+		query.with(pageable);
+
+		return mongoOperation.find(query, Movie.class);
     }
 
     @Override

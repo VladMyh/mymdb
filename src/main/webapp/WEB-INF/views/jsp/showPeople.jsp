@@ -44,9 +44,9 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li><a href="#">Movies</a></li>
+                <li><a href="${contextPath}/mymdb/movies?page=0">Movies</a></li>
                 <li><a href="#">Genres</a></li>
-                <li><a href="#">People</a></li>
+                <li><a href="${contextPath}/mymdb/people?page=0">People</a></li>
                 <form class="navbar-form navbar-left" role="search" action="${contextPath}/mymdb/search" method="get">
                     <div class="form-group">
                         <input type="text" name="query" class="form-control" placeholder="Search">
@@ -126,14 +126,14 @@
 <div class="row text-center">
     <div class="col-lg-12">
         <ul class="pagination">
-            <c:if test="${pageNum > 1}">
+            <c:if test="${pageNum > 0}">
                 <li>
-                    <a href="${contextPath}/mymdb/people/search?query=${query}&page=${pageNum - 1}">/<</a>
+                    <a href="${contextPath}/mymdb/people/search?query=${query}&page=${pageNum - 1}"><</a>
                 </li>
             </c:if>
             <c:if test="${people.size() == pageSize}">
                 <li>
-                    <a href="${contextPath}/mymdb/people/search?query=${query}&page=${pageNum + 1}">/></a>
+                    <a href="${contextPath}/mymdb/people/search?query=${query}&page=${pageNum + 1}">></a>
                 </li>
             </c:if>
         </ul>

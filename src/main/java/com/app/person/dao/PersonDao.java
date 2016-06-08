@@ -10,4 +10,5 @@ public interface PersonDao {
     Person getPersonById(String id);
     List<Person> search(String query);
 	List<Person> getPage(int pageNum, int pageSize, String searchQuery);
+	List<Person> getAllPeople(int pageNum, int pageSize);
 }

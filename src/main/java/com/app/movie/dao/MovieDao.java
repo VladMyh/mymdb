@@ -2,11 +2,10 @@ package com.app.movie.dao;
 
 import com.app.movie.Movie;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public interface MovieDao {
-    ArrayList<Movie> getAllMovies();
+    List<Movie> getAllMovies(int pageNum, int pageSize);
     Movie addOrUpdateMovie(Movie movie);
     void deleteMovie(String id);
     long getNumberOfFilms();

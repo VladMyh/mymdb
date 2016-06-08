@@ -53,4 +53,13 @@ public class MongoPersonDao implements PersonDao {
 
 		return mongoOperation.find(query, Person.class);
 	}
+
+	@Override
+	public List<Person> getAllPeople(int pageNum, int pageSize) {
+		Pageable pageable = new PageRequest(pageNum, pageSize);
+		Query query = new Query();
+		query.with(pageable);
+
+		return mongoOperation.find(query, Person.class);
+	}
 }

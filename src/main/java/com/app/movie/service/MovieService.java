@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public interface MovieService {
-    ArrayList<Movie> getAllMovies();
+    List<Movie> getAllMovies(int pageNum, int pageSize);
     Movie addOrUpdateMovie(Movie movie);
     void deleteMovie(String id);
     long getNumberOfFilms();

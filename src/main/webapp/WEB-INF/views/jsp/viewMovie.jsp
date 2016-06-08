@@ -45,9 +45,9 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li><a href="#">Movies</a></li>
+                <li><a href="${contextPath}/mymdb/movies?page=0">Movies</a></li>
                 <li><a href="#">Genres</a></li>
-                <li><a href="#">People</a></li>
+                <li><a href="${contextPath}/mymdb/people?page=0">People</a></li>
                 <form class="navbar-form navbar-left" role="search" action="${contextPath}/mymdb/search" method="get">
                     <div class="form-group">
                         <input type="text" name="query" class="form-control" placeholder="Search">
@@ -95,7 +95,7 @@
         <!-- Portfolio Item Row -->
         <div class="row">
 
-            <div class="col-md-8">
+            <div class="col-md-4">
                 <c:if test="${movie.imagesObjectIds == null}">
                     <img class="img-responsive" src="http://placehold.it/242x328" width="242" height="328" alt="">
                 </c:if>
@@ -104,7 +104,7 @@
                 </c:if>
             </div>
 
-            <div class="col-md-4">
+            <div class="col-lg-6">
                 <c:if test="${movie.synopsis != null}">
                     <h3>Synopsis</h3>
                     <p>${movie.synopsis}</p>

@@ -15,8 +15,8 @@ public class MovieServiceImp implements MovieService {
     private MovieDao movieDao;
 
     @Override
-    public ArrayList<Movie> getAllMovies() {
-        return null;
+    public List<Movie> getAllMovies(int pageNum, int pageSize) {
+        return movieDao.getAllMovies(pageNum, pageSize);
     }
 
     @Override

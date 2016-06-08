@@ -99,10 +99,12 @@ public class MainController {
 	}
 
     @RequestMapping(value = "/mymdb/movies", method = RequestMethod.GET)
-    public ModelAndView allMovies(){
+    public ModelAndView allMovies(@RequestParam(value = "page") Integer pageNum){
         ModelAndView model = new ModelAndView("showMovies");
-        model.addObject("title", "MyMDB - Movies");
-        model.addObject("movies", movieService.getAllMovies());
+        model.addObject("title", "MyMDB - All movies");
+        model.addObject("movies", movieService.getAllMovies(pageNum, searchPageSize));
+		model.addObject("pageNum", pageNum);
+		model.addObject("pageSize", searchPageSize);
         return model;
     }
 
@@ -211,6 +213,16 @@ public class MainController {
         personService.addOrUpdatePerson(person);
         return result;
     }
+
+	@RequestMapping(value = "/mymdb/people", method = RequestMethod.GET)
+	public ModelAndView allPeople(@RequestParam(value = "page") Integer pageNum){
+		ModelAndView model = new ModelAndView("showPeople");
+		model.addObject("title", "MyMDB - All people");
+		model.addObject("people", personService.getAllMovies(pageNum, searchPageSize));
+		model.addObject("pageNum", pageNum);
+		model.addObject("pageSize", searchPageSize);
+		return model;
+	}
 
 	@RequestMapping(value = "/mymdb/people/{id}", method = RequestMethod.GET)
 	public @ResponseBody ModelAndView viewPerson(@PathVariable String id){
