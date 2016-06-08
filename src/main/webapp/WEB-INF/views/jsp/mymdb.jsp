@@ -25,6 +25,8 @@
 
     <!--Context path-->
     <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
+    <c:set var="img_width" value="335"/>
+    <c:set var="img_height" value="497"/>
 </head>
 
 <body>
@@ -77,13 +79,47 @@
 <!-- Page Content -->
 <div class="container">
 
-    <!-- Page Header -->
+    <header class="jumbotron hero-spacer">
+        <h1>Welcome to MyMDB!</h1>
+        <p>An online database of information related to films</p>
+    </header>
+
+    <hr>
+
+    <!-- Title -->
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">Welcome to MyMDB!</h1>
+            <h3>Latest Movies</h3>
         </div>
-
     </div>
+    <!-- /.row -->
+
+    <!-- Latest movies -->
+    <div class="row text-center">
+        <c:forEach var="i" items="${latest}">
+            <div class="col-md-3 col-sm-6 hero-feature">
+                <div class="thumbnail">
+                    <a href="${contextPath}/mymdb/movies/${i.id}">
+                        <c:if test="${i.imagesObjectIds == null}">
+                            <img class="img-responsive" src="http://placehold.it/${img_width}x${img_height}" width="${img_width}" height="${img_height}" alt="">
+                        </c:if>
+                        <c:if test="${i.imagesObjectIds != null}">
+                            <img class="img-responsive" src="${contextPath}/mymdb/media/get?id=${i.imagesObjectIds.get(0)}"
+                                 width="${img_width}" height="${img_height}" alt="">
+                        </c:if>
+                    </a>
+                    <div class="caption">
+                        <h3>${i.title}</h3>
+                        <p>${i.synopsis}</p>
+                        <p>
+                            <a href="${contextPath}/mymdb/movies/${i.id}" class="btn btn-primary">View</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </c:forEach>
+    </div>
+    <!-- /.row -->
 
 <hr>
 

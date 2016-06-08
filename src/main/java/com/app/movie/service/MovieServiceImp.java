@@ -48,4 +48,9 @@ public class MovieServiceImp implements MovieService {
     public List<Movie> searchMovies(String query) {
         return movieDao.searchMovies(query);
     }
+
+    @Override
+    public List<Movie> getLastFour() {
+        return movieDao.getLastFour();
+    }
 }

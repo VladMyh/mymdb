@@ -54,6 +54,7 @@ public class MainController {
     public ModelAndView index(){
         ModelAndView model = new ModelAndView("mymdb");
         model.addObject("user", getPrincipal());
+		model.addObject("latest", movieService.getLastFour());
 
         return model;
     }
@@ -119,7 +120,7 @@ public class MainController {
     @RequestMapping(value = "/mymdb/movies/{id}/delete", method = RequestMethod.GET)
 	public String deleteMovie(@PathVariable(value = "id") String id){
 		movieService.deleteMovie(id);
-		return "mymdb";
+		return "redirect:/mymdb";
 	}
 
 	@RequestMapping(value = "/mymdb/movies/{id}/edit", method = RequestMethod.GET)
@@ -235,7 +236,7 @@ public class MainController {
 	@RequestMapping(value = "/mymdb/people/{id}/delete", method = RequestMethod.GET)
 	public String deletePerson(@PathVariable(value = "id") String id){
 		personService.deletePerson(id);
-		return "mymdb";
+		return "redirect:/mymdb";
 	}
 
 	@RequestMapping(value = "/mymdb/people/{id}/edit", method = RequestMethod.GET)

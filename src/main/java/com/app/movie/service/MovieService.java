@@ -13,4 +13,5 @@ public interface MovieService {
     Movie getMovieById(String id);
     List<Movie> getPage(int pageNum, int pageSize, String searchQuery);
     List<Movie> searchMovies(String query);
+    List<Movie> getLastFour();
 }

@@ -4,6 +4,7 @@ import com.app.movie.Movie;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -66,4 +67,13 @@ public class MongoMovieDao implements MovieDao {
         Pattern pattern = Pattern.compile(name, Pattern.CASE_INSENSITIVE);
         return mongoOperation.find(new Query(Criteria.where("title").regex(pattern)), Movie.class);
     }
+
+	@Override
+	public List<Movie> getLastFour() {
+		Query query = new Query();
+		query.limit(4);
+		query.with(new Sort(Sort.Direction.DESC, "_id"));
+		return mongoOperation.find(query, Movie.class);
+	}
+
 }
