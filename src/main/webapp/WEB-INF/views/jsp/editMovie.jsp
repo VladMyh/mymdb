@@ -3,6 +3,7 @@
 <%@ taglib prefix="script" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -100,7 +101,7 @@
 
         <div class="col-lg-6">
             <div class="input-group">
-                <form action="${contextPath}/mymdb/movies/update" method="post" enctype="multipart/form-data">
+                <form:form action="${contextPath}/mymdb/movies/update" method="post" enctype="multipart/form-data" modelAttribute="genreForm">
                     <input type="hidden" name="id" value="${movie.id}"/>
                     <fieldset class="form-group">
                         <label>Title</label>
@@ -121,7 +122,12 @@
                     </fieldset>
                     <fieldset class="form-group">
                         <label>Genres</label>
-                        <input type="text" class="form-control" placeholder="Another input">
+                        <ul>
+                            <c:forEach var="i" items="${movie.genres}">
+                                <li>${i.name()}</li>
+                            </c:forEach>
+                        </ul>
+                        <form:checkboxes path="genres" items="${genreList}"/>
                     </fieldset>
                     <fieldset>
                         <label>Poster</label>
@@ -136,7 +142,7 @@
                     </fieldset>
                     <button type="submit" class="btn btn-primary">Update</button>
                     <a href="${contextPath}/mymdb/movies/${movie.id}" class="btn btn-default" role="button">Back</a>
-                </form>
+                </form:form>
             </div>
         </div>
     </div>

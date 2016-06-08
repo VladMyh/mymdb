@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="script" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -88,7 +89,7 @@
     <div class="row">
         <div class="col-lg-6">
             <div class="input-group">
-                <form action="${contextPath}/mymdb/movies/add" method="post" enctype="multipart/form-data">
+                <form:form action="${contextPath}/mymdb/movies/add" method="post" enctype="multipart/form-data" modelAttribute="genreForm">
                     <fieldset class="form-group">
                         <label>Title</label>
                         <input type="text" name="title" class="form-control">
@@ -107,7 +108,7 @@
                     </fieldset>
                     <fieldset class="form-group">
                         <label>Genres</label>
-                        <input type="text" class="form-control">
+                        <form:checkboxes path="genres" items="${genreList}"/>
                     </fieldset>
                     <fieldset>
                         <label>Poster</label>
@@ -121,7 +122,7 @@
                         <input type="text" name="imageTitle" class="form-control">
                     </fieldset>
                     <button type="submit" class="btn btn-primary">Save</button>
-                </form>
+                </form:form>
             </div>
         </div>
     </div>

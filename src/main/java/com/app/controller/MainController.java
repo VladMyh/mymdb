@@ -2,6 +2,7 @@ package com.app.controller;
 
 import com.app.media.sevice.MediaService;
 import com.app.movie.Genre;
+import com.app.movie.GenreForm;
 import com.app.movie.Movie;
 import com.app.movie.service.MovieService;
 import com.app.person.JobTitle;
@@ -26,11 +27,9 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Controller
 public class MainController {
@@ -45,6 +44,11 @@ public class MainController {
     private MediaService mediaService;
 
 	private static int searchPageSize = 6;
+
+	@ModelAttribute("genreList")
+	public List<String> genres(){
+		return Stream.of(Genre.values()).map(Genre::name).collect(Collectors.toList());
+	}
 
     @RequestMapping(value = {"/mymdb"}, method = RequestMethod.GET)
     public ModelAndView index(){
@@ -119,14 +123,19 @@ public class MainController {
 	@RequestMapping(value = "/mymdb/movies/{id}/edit", method = RequestMethod.GET)
 	public ModelAndView editMovie(@PathVariable(value = "id") String id){
 		ModelAndView model = new ModelAndView("editMovie");
-		model.addObject("movie", movieService.getMovieById(id));
+		Movie movie = movieService.getMovieById(id);
+		model.addObject("movie", movie);
+		model.addObject("genreForm", new GenreForm());
 
 		return model;
 	}
 
     @RequestMapping(value = "/mymdb/movies/add", method = RequestMethod.GET)
-    public String addOrUpdateMovie(){
-        return "addMovie";
+    public ModelAndView addOrUpdateMovie(){
+		ModelAndView model = new ModelAndView("addMovie");
+		model.addObject("genreForm", new GenreForm());
+
+        return model;
     }
 
     @RequestMapping(value = {"/mymdb/movies/add", "/mymdb/movies/update"}, method = RequestMethod.POST)
@@ -137,9 +146,9 @@ public class MainController {
 								   @RequestParam(value = "runtime", required = false) Integer runtime,
 								   @RequestParam(value = "synopsis", required = false) String synopsis,
 								   @RequestParam(value = "crew", required = false) Map<String, JobTitle> crew,
-								   @RequestParam(value = "genres", required = false) List<Genre> genres,
 								   @RequestParam(value = "image", required = false) MultipartFile image,
-								   @RequestParam(value = "imageTitle", required = false) String imageTitle){
+								   @RequestParam(value = "imageTitle", required = false) String imageTitle,
+								   @ModelAttribute("genreForm") GenreForm genreForm){
         Movie movie = new Movie();
 		String result;
 		if(id != null) {
@@ -158,8 +167,10 @@ public class MainController {
             movie.setSynopsis(synopsis);
         if(crew != null)
             movie.setCrew(crew);
-        if(genres != null)
-            movie.setGenres(genres);
+        if(genreForm.getGenres() != null) {
+			List<Genre> genreSet = genreForm.getGenres().stream().map(Genre::valueOf).collect(Collectors.toList());
+			movie.setGenres(genreSet);
+		}
 		if(!image.isEmpty())
         	movie.setImagesObjectIds(uploadImage(image, imageTitle));
 
