@@ -40,8 +40,8 @@ public class MovieServiceImp implements MovieService {
     }
 
     @Override
-    public List<Movie> getPage(int pageNunber, int itemsPerPage) {
-        return null;
+    public List<Movie> getPage(int pageNum, int pageSize, String searchQuery) {
+        return movieDao.getPage(pageNum, pageSize, searchQuery);
     }
 
     @Override

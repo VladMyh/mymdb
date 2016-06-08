@@ -99,7 +99,7 @@
 
     <c:if test="${movies.size() > 0}">
         <div class="panel panel-default">
-            <div class="panel-heading">Movies, <a href="${contextPath}/mymdb/movies/search?query=${query}">see all...</a></div>
+            <div class="panel-heading">Movies, <a href="${contextPath}/mymdb/movies/search?query=${query}&page=1">see all...</a></div>
             <div class="panel-body">
 
             <table class="table">

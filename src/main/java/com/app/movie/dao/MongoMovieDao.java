@@ -2,6 +2,8 @@ package com.app.movie.dao;
 
 import com.app.movie.Movie;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -46,8 +48,14 @@ public class MongoMovieDao implements MovieDao {
     }
 
     @Override
-    public List<Movie> getPage(int pageNumber, int itemsPerPage) {
-        return null;
+    public List<Movie> getPage(int pageNum, int pageSize, String searchQuery) {
+		Pattern pattern = Pattern.compile(searchQuery, Pattern.CASE_INSENSITIVE);
+		Pageable pageable = new PageRequest(pageNum, pageSize);
+		Query query = new Query();
+		query.with(pageable);
+		query.addCriteria(Criteria.where("title").regex(pattern));
+
+		return mongoOperation.find(query, Movie.class);
     }
 
     @Override

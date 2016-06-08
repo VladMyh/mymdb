@@ -11,7 +11,7 @@ public interface MovieDao {
     void deleteMovie(String id);
     long getNumberOfFilms();
     Movie getMovieById(String id);
-    List<Movie> getPage(int pageNunber, int itemsPerPage);
+    List<Movie> getPage(int pageNum, int pageSize, String searchQuery);
     List<Movie> searchMovies(String query);
 
     //TODO: finish paging method

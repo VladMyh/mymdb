@@ -33,7 +33,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Controller
-public class MyController {
+public class MainController {
 
     @Autowired
     private MovieService movieService;
@@ -43,6 +43,8 @@ public class MyController {
 
     @Autowired
     private MediaService mediaService;
+
+	private static int searchPageSize = 6;
 
     @RequestMapping(value = {"/mymdb"}, method = RequestMethod.GET)
     public ModelAndView index(){
@@ -67,7 +69,7 @@ public class MyController {
         return model;
     }
 
-	@RequestMapping(value = "/mymdb/people/search", params = {"query"}, method = RequestMethod.GET)
+	@RequestMapping(value = "/mymdb/people/search", method = RequestMethod.GET)
 	public @ResponseBody ModelAndView searchPeople(@RequestParam(value = "query") String query){
 		ModelAndView model = new ModelAndView("showPeople");
 		model.addObject("title","MyMDB - Search");
@@ -76,12 +78,16 @@ public class MyController {
 		return model;
 	}
 
-	@RequestMapping(value = "/mymdb/movies/search", params = {"query"}, method = RequestMethod.GET)
-	public @ResponseBody ModelAndView searchMovies(@RequestParam(value = "query") String query){
+	@RequestMapping(value = "/mymdb/movies/search", method = RequestMethod.GET)
+	public @ResponseBody ModelAndView searchMovies(@RequestParam(value = "query") String query,
+												   @RequestParam(value = "page") Integer pageNum){
 		ModelAndView model = new ModelAndView("showMovies");
 		model.addObject("title","MyMDB - Search");
-		model.addObject("movies", movieService.searchMovies(query));
+		model.addObject("movies", movieService.getPage(pageNum, searchPageSize, query));
 		model.addObject("user", getPrincipal());
+		model.addObject("pageNum", pageNum);
+		model.addObject("pageSize", searchPageSize);
+
 		return model;
 	}
 
@@ -114,36 +120,6 @@ public class MyController {
 
 		return model;
 	}
-
-    @RequestMapping(value = "/mymdb/admin**", method = RequestMethod.GET)
-    public String adminPage(){
-        return "admin";
-    }
-
-    @RequestMapping(value = "/mymdb/user**", method = RequestMethod.GET)
-    public String userPage(){
-        return "user";
-    }
-
-    @RequestMapping(value = "/error", method = RequestMethod.GET)
-    public String accessDeniedPage(ModelMap model) {
-        model.addAttribute("user", getPrincipal());
-        return "error";
-    }
-
-    @RequestMapping(value = "/mymdb/login", method = RequestMethod.GET)
-    public String loginPage() {
-        return "login";
-    }
-
-    @RequestMapping(value="/mymdb/logout", method = RequestMethod.GET)
-    public String logoutPage (HttpServletRequest request, HttpServletResponse response) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null){
-            new SecurityContextLogoutHandler().logout(request, response, auth);
-        }
-        return "redirect:/mymdb/login?logout";
-    }
 
     @RequestMapping(value = "/mymdb/movies/add", method = RequestMethod.GET)
     public String addOrUpdateMovie(){
@@ -254,17 +230,47 @@ public class MyController {
         return null;
     }
 
-    private String getPrincipal(){
-        String userName = null;
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	@RequestMapping(value = "/mymdb/admin**", method = RequestMethod.GET)
+	public String adminPage(){
+		return "admin";
+	}
 
-        if (principal instanceof UserDetails) {
-            userName = ((UserDetails)principal).getUsername();
-        } else {
-            userName = principal.toString();
-        }
-        return userName;
-    }
+	@RequestMapping(value = "/mymdb/user**", method = RequestMethod.GET)
+	public String userPage(){
+		return "user";
+	}
+
+	@RequestMapping(value = "/error", method = RequestMethod.GET)
+	public String accessDeniedPage(ModelMap model) {
+		model.addAttribute("user", getPrincipal());
+		return "error";
+	}
+
+	@RequestMapping(value = "/mymdb/login", method = RequestMethod.GET)
+	public String loginPage() {
+		return "login";
+	}
+
+	@RequestMapping(value="/mymdb/logout", method = RequestMethod.GET)
+	public String logoutPage (HttpServletRequest request, HttpServletResponse response) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if (auth != null){
+			new SecurityContextLogoutHandler().logout(request, response, auth);
+		}
+		return "redirect:/mymdb/login?logout";
+	}
+
+	public String getPrincipal(){
+		String userName = null;
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+		if (principal instanceof UserDetails) {
+			userName = ((UserDetails)principal).getUsername();
+		} else {
+			userName = principal.toString();
+		}
+		return userName;
+	}
 
     private List<String> uploadImage(MultipartFile image, String imageTitle){
         if(!image.isEmpty()) {

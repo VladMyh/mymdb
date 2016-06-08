@@ -83,10 +83,16 @@
         <div class="row">
             <div class="col-lg-12">
                 <h1 class="page-header">Search
-                <small>${movies.size()} results</small></h1>
             </div>
         </div>
         <!--Rows-->
+
+        <c:if test="${movies.size() == 0}">
+            <div class="alert alert-warning alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                No more results
+            </div>
+        </c:if>
 
         <c:forEach var="i" items="${movies}" varStatus="stat">
             <c:if test="${stat.index % 3 == 0}">
@@ -121,27 +127,16 @@
         <div class="row text-center">
             <div class="col-lg-12">
                 <ul class="pagination">
-                    <li>
-                        <a href="#">&laquo;</a>
-                    </li>
-                    <li class="active">
-                        <a href="#">1</a>
-                    </li>
-                    <li>
-                        <a href="#">2</a>
-                    </li>
-                    <li>
-                        <a href="#">3</a>
-                    </li>
-                    <li>
-                        <a href="#">4</a>
-                    </li>
-                    <li>
-                        <a href="#">5</a>
-                    </li>
-                    <li>
-                        <a href="#">&raquo;</a>
-                    </li>
+                    <c:if test="${pageNum > 1}">
+                        <li>
+                            <a href="${contextPath}/mymdb/movies/search?query=${query}&page=${pageNum - 1}">/<</a>
+                        </li>
+                    </c:if>
+                    <c:if test="${movies.size() == pageSize}">
+                        <li>
+                            <a href="${contextPath}/mymdb/movies/search?query=${query}&page=${pageNum + 1}">/></a>
+                        </li>
+                    </c:if>
                 </ul>
             </div>
         </div>
