@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.annotation.concurrent.Immutable;
 import java.util.ArrayList;
+import java.util.List;
 
 @Document(collection = "users")
 @Immutable
@@ -16,12 +17,12 @@ public class User {
     private String ic;
     private String username;
     private String password;
-    private ArrayList<UserRole> roles;
+    private List<UserRole> roles;
 
     public User() {
     }
 
-    public User(String username, String password, ArrayList<UserRole> roles) {
+    public User(String username, String password, List<UserRole> roles) {
         this.username = username;
         this.password = password;
         this.roles = roles;
@@ -59,11 +60,11 @@ public class User {
         this.password = password;
     }
 
-    public ArrayList<UserRole> getRoles() {
+    public List<UserRole> getRoles() {
         return roles;
     }
 
-    public void setRoles(ArrayList<UserRole> roles) {
+    public void setRoles(List<UserRole> roles) {
         this.roles = roles;
     }
 

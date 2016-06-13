@@ -93,7 +93,7 @@
     <!-- Portfolio Item Row -->
     <div class="row">
 
-        <div class="col-md-8">
+        <div class="col-md-4">
             <c:if test="${person.imagesObjectIds == null}">
                 <img class="img-responsive" src="http://placehold.it/${img_width}x${img_height}" width="${img_width}" height="${img_height}" alt="">
             </c:if>
@@ -102,7 +102,7 @@
             </c:if>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-lg-6">
             <c:if test="${person.description != null}">
                 <h3>Description</h3>
                 <p>${person.description}</p>

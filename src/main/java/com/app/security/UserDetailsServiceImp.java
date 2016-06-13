@@ -29,7 +29,7 @@ public class UserDetailsServiceImp implements UserDetailsService{
 
     private List<GrantedAuthority> getGrantedAuthorities(User user){
         return user.getRoles().stream()
-                .map(role -> new SimpleGrantedAuthority("ROLE_" + role.toString()))
+                .map(role -> new SimpleGrantedAuthority(role.name()))
                 .collect(Collectors.toList());
     }
 }
