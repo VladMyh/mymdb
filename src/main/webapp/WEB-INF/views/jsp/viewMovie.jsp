@@ -121,8 +121,18 @@
                     </c:forEach>
                     </ul>
                 </c:if>
+                <c:if test="${movie.crew != null}">
+                    <h3>People</h3>
+                    <c:forEach var="i" items="${movie.crew}">
+                        <h4>${i.key}</h4>
+                        <c:forEach var="j" items="${movie.crew.get(i.key)}">
+                            <a href="${contextPath}/mymdb/people/${j}">${peopleNames.get(j)}</a>
+                        </c:forEach>
+                    </c:forEach>
+                </c:if>
                 <sec:authorize access="hasRole('ADMIN')">
                     <a href="${contextPath}/mymdb/movies/${movie.id}/edit" class="btn btn-default" role="button">Edit</a>
+                    <a href="${contextPath}/mymdb/movies/${movie.id}/addpeople" class="btn btn-default" role="button">Edit people</a>
                     <a href="${contextPath}/mymdb/movies/${movie.id}/delete" class="btn btn-danger" role="button">Delete</a>
                 </sec:authorize>
             </div>

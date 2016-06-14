@@ -1,6 +1,7 @@
 package com.app.movie.dao;
 
 import com.app.movie.Movie;
+import com.app.person.JobTitle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -10,6 +11,9 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -74,6 +78,36 @@ public class MongoMovieDao implements MovieDao {
 		query.limit(4);
 		query.with(new Sort(Sort.Direction.DESC, "_id"));
 		return mongoOperation.find(query, Movie.class);
+	}
+
+	@Override
+	public void addPersonToMovie(String movieId, String personId, JobTitle title) {
+		Movie movie = mongoOperation.findOne(new Query(Criteria.where("_id").is(movieId)), Movie.class);
+
+		if(movie.getCrew() == null){
+			movie.setCrew(new HashMap<>());
+		}
+		if(movie.getCrew().containsKey(title)) {
+			if(!movie.getCrew().get(title).contains(personId)) {
+				movie.getCrew().get(title).add(personId);
+			}
+		}
+		else {
+			ArrayList<String> peopleIds = new ArrayList<>();
+			peopleIds.add(personId);
+			movie.getCrew().put(title, peopleIds);
+		}
+
+		mongoOperation.save(movie);
+	}
+
+	@Override
+	public void deletePersonToMovie(String movieId, String personId, JobTitle title) {
+		Movie movie = mongoOperation.findOne(new Query(Criteria.where("_id").is(movieId)), Movie.class);
+
+		if(movie.getCrew().containsKey(title)) {
+			movie.getCrew().get(title).remove(personId);
+		}
 	}
 
 }

@@ -22,7 +22,7 @@ public class Movie {
     private String title;
     private String synopsis;
     private Integer runtimeMinutes;
-    private Map<String, JobTitle> crew;
+    private Map<JobTitle, List<String>> crew;
     private List<Genre> genres;
     private List<String> imagesObjectIds;
 
@@ -31,18 +31,6 @@ public class Movie {
 
     public Movie(String id){
         this.id = id;
-    }
-
-    public Movie(Date releaseDate, String title, String synopsis,
-                 Integer runtimeMinutes, Map<String, JobTitle> crew,
-                 List<Genre> genres, List<String> imagesObjectIds) {
-        this.releaseDate = releaseDate;
-        this.title = title;
-        this.synopsis = synopsis;
-        this.runtimeMinutes = runtimeMinutes;
-        this.crew = crew;
-        this.genres = genres;
-        this.imagesObjectIds = imagesObjectIds;
     }
 
     public String getId() {
@@ -93,11 +81,11 @@ public class Movie {
         this.runtimeMinutes = runtimeMinutes;
     }
 
-    public Map<String, JobTitle> getCrew() {
+    public Map<JobTitle, List<String>> getCrew() {
         return crew;
     }
 
-    public void setCrew(Map<String, JobTitle> crew) {
+    public void setCrew(Map<JobTitle, List<String>> crew) {
         this.crew = crew;
     }
 

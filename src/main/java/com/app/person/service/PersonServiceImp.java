@@ -5,7 +5,9 @@ import com.app.person.dao.PersonDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Hashtable;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class PersonServiceImp implements PersonService{
@@ -41,5 +43,10 @@ public class PersonServiceImp implements PersonService{
     @Override
     public List<Person> getAllMovies(int pageNum, int pageSize) {
         return personDao.getAllPeople(pageNum, pageSize);
+    }
+
+    @Override
+    public Hashtable<String, String> getPeopleByIds(Set<String> ids) {
+        return personDao.getPeopleByIds(ids);
     }
 }

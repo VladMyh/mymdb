@@ -1,6 +1,7 @@
 package com.app.movie.dao;
 
 import com.app.movie.Movie;
+import com.app.person.JobTitle;
 
 import java.util.List;
 
@@ -13,6 +14,6 @@ public interface MovieDao {
     List<Movie> getPage(int pageNum, int pageSize, String searchQuery);
     List<Movie> searchMovies(String query);
     List<Movie> getLastFour();
-
-    //TODO: finish paging method
+    void addPersonToMovie(String movieId, String personId, JobTitle title);
+	void deletePersonToMovie(String movieId, String personId, JobTitle title);
 }

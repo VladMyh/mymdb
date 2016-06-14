@@ -2,6 +2,7 @@ package com.app.movie.service;
 
 import com.app.movie.Movie;
 import com.app.movie.dao.MovieDao;
+import com.app.person.JobTitle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -52,5 +53,15 @@ public class MovieServiceImp implements MovieService {
     @Override
     public List<Movie> getLastFour() {
         return movieDao.getLastFour();
+    }
+
+    @Override
+    public void addPersonToMovie(String movieId, String personId, JobTitle title) {
+        movieDao.addPersonToMovie(movieId, personId, title);
+    }
+
+    @Override
+    public void deletePersonToMovie(String movieId, String personId, JobTitle title) {
+        movieDao.deletePersonToMovie(movieId, personId, title);
     }
 }

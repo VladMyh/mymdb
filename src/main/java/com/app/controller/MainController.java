@@ -112,8 +112,18 @@ public class MainController {
     @RequestMapping(value = "/mymdb/movies/{id}", method = RequestMethod.GET)
     public @ResponseBody ModelAndView viewMovie(@PathVariable String id){
         ModelAndView model = new ModelAndView("viewMovie");
-        model.addObject("movie", movieService.getMovieById(id));
 
+		Movie movie = movieService.getMovieById(id);
+
+		if(movie.getCrew() != null) {
+			Set<String> ids = new HashSet<>();
+			for(JobTitle title : movie.getCrew().keySet()){
+				ids.addAll(movie.getCrew().get(title));
+			}
+			model.addObject("peopleNames", personService.getPeopleByIds(ids));
+		}
+
+		model.addObject("movie", movie);
         return model;
     }
 
@@ -133,6 +143,13 @@ public class MainController {
 		return model;
 	}
 
+	@RequestMapping(value = "/mymdb/movies/{id}/addpeople", method = RequestMethod.GET)
+	public String addPeopleToMovies(@PathVariable(value = "id") String id){
+		//TODO: display search to add person to movie
+
+		return "movieRoles";
+	}
+
     @RequestMapping(value = "/mymdb/movies/add", method = RequestMethod.GET)
     public ModelAndView addOrUpdateMovie(){
 		ModelAndView model = new ModelAndView("addMovie");
@@ -148,7 +165,6 @@ public class MainController {
 									   @DateTimeFormat(pattern = "yyyy-MM-dd") Date releaseDate,
 								   @RequestParam(value = "runtime", required = false) Integer runtime,
 								   @RequestParam(value = "synopsis", required = false) String synopsis,
-								   @RequestParam(value = "crew", required = false) Map<String, JobTitle> crew,
 								   @RequestParam(value = "image", required = false) MultipartFile image,
 								   @RequestParam(value = "imageTitle", required = false) String imageTitle,
 								   @ModelAttribute("genreForm") GenreForm genreForm){
@@ -168,8 +184,6 @@ public class MainController {
             movie.setRuntimeMinutes(runtime);
         if(synopsis != null)
             movie.setSynopsis(synopsis);
-        if(crew != null)
-            movie.setCrew(crew);
         if(genreForm.getGenres() != null) {
 			List<Genre> genreSet = genreForm.getGenres().stream().map(Genre::valueOf).collect(Collectors.toList());
 			movie.setGenres(genreSet);

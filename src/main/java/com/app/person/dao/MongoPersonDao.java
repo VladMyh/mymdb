@@ -7,10 +7,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 @Repository
@@ -61,5 +64,16 @@ public class MongoPersonDao implements PersonDao {
 		query.with(pageable);
 
 		return mongoOperation.find(query, Person.class);
+	}
+
+	@Override
+	public Hashtable<String, String> getPeopleByIds(Set<String> ids) {
+		Hashtable<String, String> result = new Hashtable<>();
+
+		for(String id : ids){
+			result.put(id, mongoOperation.findOne(new Query(Criteria.where("_id").is(id)), Person.class).getName());
+		}
+
+		return result;
 	}
 }
